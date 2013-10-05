@@ -1,4 +1,4 @@
 simes
 =====
 
-A simulator for hybrid electrical energy storage systems
+A simulator for hybrid electrical energy storage systems.
