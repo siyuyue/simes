@@ -16,7 +16,7 @@ AR=ar
 ARFLAGS=rcf
 
 LIBRARY=$(addprefix lib/, libsimulator.a)
-EXECUTABLE=simulator
+EXECUTABLE=$(addprefix bin/, simulator)
 
 all: $(BUILDDIRS) $(LIBRARY) $(EXECUTABLE)
 	@ echo "Done!"
@@ -51,6 +51,7 @@ clean: $(CLEANDIRS)
 
 mkdir: $(MKDIRDIRS)
 	@ mkdir -p lib
+	@ mkdir -p bin
 
 .PHONY: $(BUILDDIRS)
 .PHONY: $(CLEANDIRS)
