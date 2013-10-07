@@ -3,6 +3,11 @@
 // Register all bank classes here by their names
 // **********************************************
 #include "Bank.h"
+#include "SimpleBattery.h"
+#include "LiIonBattery.h"
+#include "LeadAcidBattery.h"
+#include "SuperCap.h"
+#include "Grid.h"
 #include <string>
 
 using namespace std;
@@ -13,7 +18,7 @@ CBankBase * CBankBase::Create(const string &derivedType)
 	{
 		return new CSimpleBattery();
 	}
-	if( derivedType == string("LiionBattery") )
+	if( derivedType == string("LiIonBattery") )
 	{
 		return new CLiIonBattery();
 	}

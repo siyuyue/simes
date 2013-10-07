@@ -25,3 +25,7 @@ clean:
 	@ echo "Cleaning..."
 	@ rm -f $(OBJECTS)
 	@ rm -f $(LIBRARY)
+
+mkdir:
+	@ mkdir library
+	@ mkdir obj
