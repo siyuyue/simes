@@ -1,6 +1,6 @@
 # Comment goes here.
 
-INCLUDE_PATH=../../tinyxml/include ../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
+INCLUDE_PATH=../../tinyxml ../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
 
 CC=g++
 CFLAGS=-o2 -c $(addprefix -I, $(INCLUDE_PATH))
@@ -21,4 +21,4 @@ clean:
 	@ rm -f $(OBJECTS)
 
 mkdir:
-	@ mkdir obj
+	@ mkdir -p obj

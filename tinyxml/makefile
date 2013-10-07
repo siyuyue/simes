@@ -1,31 +1,22 @@
 # Comment goes here.
 
 CC=g++
-CFLAGS=-o2 -c -Wall -I include/
-
-AR=ar
-ARFLAGS=rc
+CFLAGS=-o2 -c -Wall
 
 SOURCES=tinystr.cpp tinyxml.cpp tinyxmlerror.cpp tinyxmlparser.cpp
-HEADERS=$(addprefix include/, tinystr.h tinyxml.h)
+HEADERS=tinystr.h tinyxml.h
 OBJECTS=$(addprefix obj/, $(SOURCES:.cpp=.o))
-LIBRARY=$(addprefix lib/, libtinyxml.a)
 
-all: $(SOURCES) $(HEADERS) $(LIBRARY)
+all: $(SOURCES) $(HEADERS) $(OBJECTS)
 	@ echo "Done!"
 
-$(LIBRARY): $(OBJECTS)
-	@ echo "Compiling tinyxml library..."
-	@ $(AR) $(ARFLAGS) $(LIBRARY) $(OBJECTS)
-
 obj/%.o: %.cpp
+	@ echo "Compiling $<"
 	@ $(CC) $(CFLAGS) $< -o $@
 
 clean:
 	@ echo "Cleaning..."
 	@ rm -f $(OBJECTS)
-	@ rm -f $(LIBRARY)
 
 mkdir:
-	@ mkdir library
-	@ mkdir obj
+	@ mkdir -p obj

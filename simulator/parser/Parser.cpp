@@ -87,7 +87,7 @@ void CParser::Parse(const string &filename, bool parseCommands)
 		}
 		else if( type == string("converter") )
 		{
-			_pSimulator->AddConverter(pNameElement->GetText(), CSimpleConverter::Create(pDerivedElement->Attribute("type")));
+			_pSimulator->AddConverter(pNameElement->GetText(), CConverterBase::Create(pDerivedElement->Attribute("type")));
 		}
 		else if( type == string("manager") )
 		{

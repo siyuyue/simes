@@ -1,6 +1,8 @@
 // **********************************************
-// Converter.h
-// Definition of all converter classes
+// CConverterBase class:
+// - Inherited from CTiming
+// - Join two CPort
+// - Abstract class
 // **********************************************
 #pragma once
 
@@ -8,12 +10,6 @@
 #include "Component.h"
 #include "Port.h"
 
-// **********************************************
-// CConverterBase class:
-// - Inherited from CTiming
-// - Join two CPort
-// - Abstract class
-// **********************************************
 class CConverterBase : public CComponent
 {
 protected:

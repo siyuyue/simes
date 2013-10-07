@@ -2,10 +2,9 @@
 // SourceCreate.cpp
 // Register all source classes here by their names
 // **********************************************
-#include "Source.h"
 #include <string>
-
-using namespace std;
+#include "Source.h"
+#include "IdealVoltageSource.h"
 
 CSourceBase* CSourceBase::Create(const string &derivedType)
 {

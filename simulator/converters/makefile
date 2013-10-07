@@ -22,4 +22,4 @@ clean:
 	@ rm -f $(OBJECTS)
 
 mkdir:
-	@ mkdir obj
+	@ mkdir -p obj
