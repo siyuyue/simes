@@ -3,6 +3,9 @@
 // Register all converter classes here by their names
 // **********************************************
 #include "Converter.h"
+#include "SimpleConverter.h"
+#include "DCDCConverter.h"
+#include "LUTConverter.h"
 
 using namespace std;
 

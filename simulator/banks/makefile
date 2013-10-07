@@ -1,11 +1,11 @@
 # Comment goes here.
 
-INCLUDE_PATH=../core
+INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
+CLASSES=Bank Grid LeadAcidBattery LiIonBattery SimpleBattery SuperCap
 
 CC=g++
 CFLAGS=-o2 -c $(addprefix -I, $(INCLUDE_PATH))
 
-CLASSES=Bank Grid LeadAcidBattery LiIonBattery SimpleBattery SuperCap
 SOURCES=$(addsuffix .cpp, $(CLASSES)) BankCreate.cpp
 HEADERS=$(addsuffix .h, $(CLASSES))
 OBJECTS=$(addprefix obj/, $(SOURCES:.cpp=.o))

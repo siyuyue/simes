@@ -1,19 +1,20 @@
 # Comment goes here.
 
-INCLUDE_PATH=../../tinyxml/include ../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
+INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
+CLASSES=Converter DCDCConverter LUTConverter SimpleConverter
 
 CC=g++
 CFLAGS=-o2 -c $(addprefix -I, $(INCLUDE_PATH))
 
-SOURCES=Parser.cpp
-HEADERS=Parser.h
+SOURCES=$(addsuffix .cpp, $(CLASSES)) ConverterCreate.cpp
+HEADERS=$(addsuffix .h, $(CLASSES))
 OBJECTS=$(addprefix obj/, $(SOURCES:.cpp=.o))
 
 all: $(SOURCES) $(HEADERS) $(OBJECTS)
 	@ echo "Done!"
 
 obj/%.o: %.cpp
-	@ echo "Compiling parser..."
+	@ echo "Compiling $<"
 	@ $(CC) $(CFLAGS) $< -o $@
 
 clean:
