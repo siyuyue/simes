@@ -2,8 +2,10 @@
 // LoadCreate.cpp
 // Register all load classes here by their names
 // **********************************************
-#include "Load.h"
 #include <string>
+#include "Load.h"
+#include "ConstantLoad.h"
+#include "ProfileLoad.h"
 
 using namespace std;
 
