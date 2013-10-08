@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<project>
+  <name>validation</name>
+  <comp type="bank">
+	<name>Li</name>
+	<derived type = "LiIonBattery">
+		<m_bank>2</m_bank>
+		<n_bank>6</n_bank>
+	</derived>
+  </comp>
+  <comp type="bank">
+	<name>Le</name>
+	<derived type = "LeadAcidBattery">
+		<m_bank>2</m_bank>
+		<n_bank>2</n_bank>
+	</derived>
+  </comp>
+  <comp type="bank">
+	<name>SC</name>
+	<derived type = "SuperCapacitor">
+		<voltage>17.36</voltage>
+		<capacitance>36.1</capacitance>
+		<max_voltage>50.</max_voltage>
+	</derived>
+  </comp>
+  <comp type="bank">
+	<name>grid</name>
+	<derived type = "Grid">
+	</derived>
+  </comp>
+  <comp type="cti">
+	<name>CTI</name>
+	<derived>
+		<voltage_regulator>Conv4</voltage_regulator>
+		<voltage>19.4</voltage>
+		<target_voltage>19.4</target_voltage>
+		<capacitance>0.1</capacitance>
+	</derived>
+  </comp>
+  <comp type="converter">
+	<name>Conv1</name>
+	<port_a>Li</port_a>
+	<port_b>CTI</port_b>
+	<derived type = "LUTConverter">
+		<output_current_lut>coneff.txt</output_current_lut>
+	</derived>
+  </comp>
+  <comp type="converter">
+	<name>Conv2</name>
+	<port_a>Le</port_a>
+	<port_b>CTI</port_b>
+	<derived type = "LUTConverter">
+		<output_current_lut>coneff.txt</output_current_lut>
+	</derived>
+  </comp>
+  <comp type="converter">
+	<name>Conv3</name>
+	<port_a>SC</port_a>
+	<port_b>CTI</port_b>
+	<derived type = "LUTConverter">
+		<output_current_lut>coneff.txt</output_current_lut>
+	</derived>
+  </comp>
+  <comp type="converter">
+	<name>Conv4</name>
+	<port_a>grid</port_a>
+	<port_b>CTI</port_b>
+	<derived type = "SimpleConverter">
+		<efficiency>1</efficiency>
+	</derived>
+  </comp>
+  <comp type="manager">
+	<name>manager</name>
+	<derived type="ProfileManager">
+		<input_file>validinput.txt</input_file>
+	</derived>
+  </comp>
+  <sensor_interval>0.1</sensor_interval>
+  <sensor target="CTI" property="voltage"/>
+  <sensor target="Li" property="closed_circuit_voltage"/>
+  <sensor target="Le" property="closed_circuit_voltage"/>
+  <sensor target="SC" property="voltage"/>
+  <cmd time=0 type="set" target="Li">
+	<state_of_charge>0.75</state_of_charge>
+  </cmd>
+  <cmd time=0 type="set" target="Le">
+	<state_of_charge>0.48</state_of_charge>
+  </cmd>
+  <cmd time=1712 type="finish"/>
+</project>

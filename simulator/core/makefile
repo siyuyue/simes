@@ -4,22 +4,26 @@ INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../manage
 CLASSES=Component Port LookUpTable Sensor SimException Simulator
 
 CC=g++
-CFLAGS=-o2 -c $(addprefix -I, $(INCLUDE_PATH))
+CFLAGS=-O2 -c $(addprefix -I, $(INCLUDE_PATH))
 
 SOURCES=$(addsuffix .cpp, $(CLASSES))
 HEADERS=$(addsuffix .h, $(CLASSES)) config.h
 OBJECTS=$(addprefix obj/, $(SOURCES:.cpp=.o))
+DEPS=$(OBJECTS:.o=.d)
 
 all: $(SOURCES) $(HEADERS) $(OBJECTS)
 	@ echo "Done!"
 
 obj/%.o: %.cpp
 	@ echo "Compiling $<"
-	@ $(CC) $(CFLAGS) $< -o $@
+	@ $(CC) $(CFLAGS) -MMD $< -o $@
 
 clean:
 	@ echo "Cleaning..."
 	@ rm -f $(OBJECTS)
+	@ rm -f $(DEPS)
 
 mkdir:
 	@ mkdir -p obj
+
+-include $(DEPS)

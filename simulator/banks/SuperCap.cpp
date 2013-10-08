@@ -1,5 +1,6 @@
 #include <cmath>
 #include "SuperCap.h"
+#include "SimException.h"
 
 CSuperCap::CSuperCap(void)
 {
@@ -7,8 +8,8 @@ CSuperCap::CSuperCap(void)
 	_openCircuitVoltage = 1.;
 	_selfDischargeRate = 0;
 	_seriesResistace = 0;
-	_minVoltage = 1.;
-    _maxVoltage = 50.;
+	_minVoltage = 0.;
+    _maxVoltage = INF;
 	_maxPower = 100;
 }
 
@@ -77,11 +78,11 @@ void CSuperCap::TimeElapse(double time, double timeElapsed)
 	_openCircuitVoltage = sqrt( energyNew * 2 / _capacitance );
 	if( _openCircuitVoltage < _minVoltage )
 	{
-		// ToDo: Maybe a warning here.
+		throw new CSimException(GetName().c_str(), "Super capacitor voltage goes below minimum.");
 	}
 	else if( _openCircuitVoltage > _maxVoltage)
 	{
-		// ToDo: Maybe a warning here.
+		throw new CSimException(GetName().c_str(), "Super capacitor voltage goes above maximum.");
 	}
 }
 
@@ -100,6 +101,16 @@ bool CSuperCap::SetProperty(const string &name, const string& value)
 	if( name == string("series_resistance") )
 	{
 		_seriesResistace = FromString<double>(value);
+		return true;
+	}
+	if( name == string("min_voltage") )
+	{
+		_minVoltage = FromString<double>(value);
+		return true;
+	}
+	if( name == string("max_voltage") )
+	{
+		_maxVoltage = FromString<double>(value);
 		return true;
 	}
 	return false;

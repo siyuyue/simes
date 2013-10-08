@@ -1,7 +1,7 @@
 // **********************************************
 // CGrid Class:
 // - Inherits from CBankBase
-// - Bi-directional
+// - Bi-directional to allow selling back electricity
 // **********************************************
 #pragma once
 

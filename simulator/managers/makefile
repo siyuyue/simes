@@ -1,21 +1,22 @@
 # Comment goes here.
 
 INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
-CLASSES=ChargeManager SimpleManager
+CLASSES=ChargeManager SimpleManager ProfileManager
 
 CC=g++
-CFLAGS=-o2 -c $(addprefix -I, $(INCLUDE_PATH))
+CFLAGS=-O2 -c $(addprefix -I, $(INCLUDE_PATH))
 
 SOURCES=$(addsuffix .cpp, $(CLASSES)) ChargeManagerCreate.cpp
 HEADERS=$(addsuffix .h, $(CLASSES))
 OBJECTS=$(addprefix obj/, $(SOURCES:.cpp=.o))
+DEPS=$(OBJECTS:.o=.d)
 
 all: $(SOURCES) $(HEADERS) $(OBJECTS)
 	@ echo "Done!"
 
 obj/%.o: %.cpp
 	@ echo "Compiling $<"
-	@ $(CC) $(CFLAGS) $< -o $@
+	@ $(CC) $(CFLAGS) -MMD $< -o $@
 
 clean:
 	@ echo "Cleaning..."
@@ -23,3 +24,5 @@ clean:
 
 mkdir:
 	@ mkdir -p obj
+
+-include $(DEPS)
