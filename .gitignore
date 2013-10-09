@@ -13,6 +13,12 @@
 *.la
 *.a
 
+# QT Configurations
+*.pro.user
+
+# QT Build directory
+QT-build/
+
 # Binaries
 bin/
 
