@@ -20,6 +20,7 @@ obj/%.o: %.cpp
 clean:
 	@ echo "Cleaning..."
 	@ rm -f $(OBJECTS)
+	@ rm -f $(DEPS)
 
 mkdir:
 	@ mkdir -p obj
