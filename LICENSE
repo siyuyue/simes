@@ -1,1 +1,11 @@
 Copyright (c) 2013 SPORTS Lab, University of Southern California
+
+This work is licensed under a Creative Commons Attribution 3.0 Unported License:
+http://creativecommons.org/licenses/by/3.0/
+
+All academic uses of this work that leads to a academic publication should cite this paper:
+"SIMES: A Simulator for Hybrid Electrical Energy Storage Systems",
+Proc. of the Int'l Symposium on Low Power Electronics and Design, Sep. 2013.
+
+This work uses TinyXML(http://www.grinninglizard.com/tinyxml/),
+TinyXML is released under the ZLib license.
