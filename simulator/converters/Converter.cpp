@@ -47,7 +47,6 @@ void CConverterBase::SetPortOutputCurrent(double time, bool isPortA, double curr
 		{
 			// Error here, port A cannot be output.
             throw CSimException(GetName().c_str(),"Port A cannot be output!");
-			return;
 		}
 		_isPortAOutput = true;
 	}
@@ -57,7 +56,6 @@ void CConverterBase::SetPortOutputCurrent(double time, bool isPortA, double curr
 		{
 			// Error here, port B cannot be output.
             throw CSimException(GetName().c_str(),"Port B cannot be output!");
-			return;
 		}
 		_isPortAOutput = false;
 	}
@@ -73,7 +71,6 @@ void CConverterBase::SetPortInputCurrent(double time, bool isPortA, double curre
 		{
 			// Error here, port A cannot be input.
             throw CSimException(GetName().c_str(),"Port A cannot be input!");
-			return;
 		}
 		_isPortAOutput = false;
 	}
@@ -83,7 +80,6 @@ void CConverterBase::SetPortInputCurrent(double time, bool isPortA, double curre
 		{
 			// Error here, port B cannot be input.
             throw CSimException(GetName().c_str(),"Port B cannot be input!");
-			return;
 		}
 		_isPortAOutput = true;
 	}

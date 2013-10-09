@@ -27,7 +27,6 @@ double CLUTConverter::FindOutputCurrent(double time, bool isOutputPortA, double 
         double fr = FindInputCurrent(time, !isOutputPortA, inputVoltage, outputVoltage, xr) - inputCurrent;
         if( (fl > 0 && fr > 0) || (fl < 0 && fr < 0))
         {
-            // Err...
             throw CSimException(GetName().c_str(), "Binary Search Failed.");
         }
         while( xr - xl > EPS )

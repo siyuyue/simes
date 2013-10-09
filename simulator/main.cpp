@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     }
     bool interactiveMode = false;
     // Parse options
-    for(int i=2; i<argc; i++)
+    for(int i=1; i<argc; i++)
     {
         if( argv[i][0] == '-' )
         {
@@ -35,18 +35,27 @@ int main(int argc, char* argv[])
             {
                 interactiveMode = true;
             }
+            if( argv[i][1] == 'h' )
+            {
+                cout << "HEES System Simulator." << endl;
+                cout << "Usage : " << argv[0] << " inputfilename [options]." << endl;
+                cout << "Options:" << endl;
+                cout << "    -h: Help." << endl;
+                cout << "    -i: Interactive mode." << endl;
+                return 0;
+            }
         }
     }
     CParser parser;
     CSimulator *pSimulator = NULL;
-    vector<CCommand> * pCommandList = NULL;
+    vector<CCommand> *pCommandList = NULL;
     try
     {
         parser.Parse(argv[1]);
         pSimulator = parser.GetSimulator();
         if( pSimulator == NULL )
         {
-            throw CSimException("Main","Parsing failed!");
+            throw CSimException("Main", "Parsing failed!");
         }
         pSimulator->CheckIntegrity();
 
@@ -57,6 +66,7 @@ int main(int argc, char* argv[])
             CCommand command;
             while( command.type != CCommand::FINISH )
             {
+                cout << "[Simes](Time = " << pSimulator->GetTime() << "s):";
                 getline(cin, line);
                 command = CCommand::FromString(line);
                 if( command.type != CCommand::SIMULATE )
@@ -69,7 +79,14 @@ int main(int argc, char* argv[])
                 }
                 else
                 {
-                    pSimulator->IssueCommand(command);
+                    if( !pSimulator->IssueCommand(command) )
+                    {
+                        cout << "Command failed to issue." << endl;
+                    }
+                    if( command.type == CCommand::GET )
+                    {
+                        cout << command.targetName << "." << command.propertyName << ":" << command.propertyValue << endl;
+                    }
                 }
             }
         }
@@ -82,10 +99,11 @@ int main(int argc, char* argv[])
             }
         }
     }
-    catch(CSimException &e)
+    catch(CSimException e)
     {
         cout << "[Error!]" << e.componentName << ": " << e.exceptionMessage << endl;
     }
+    cout << "Simulation complete." << endl;
 
 	delete pSimulator;
 	delete pCommandList;

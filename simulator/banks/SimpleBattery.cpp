@@ -1,5 +1,6 @@
 #include <cmath>
 #include "SimpleBattery.h"
+#include "SimException.h"
 
 CSimpleBattery::CSimpleBattery(void)
 {
@@ -34,8 +35,7 @@ double CSimpleBattery::Charge(double duration, double current)
 	_stateOfCharge += chargeChange / (3600*_capacity);
 	if( _stateOfCharge > 1 )
 	{
-		// ---- ToDo: Maybe a warning here ----
-		_stateOfCharge = 1;
+		throw CSimException(GetName().c_str(), "State of charge goes above capacity limit.");
 	}
 	return chargeChange*_openCircuitVoltage;
 }
@@ -46,8 +46,7 @@ double CSimpleBattery::Discharge(double duration, double current)
 	_stateOfCharge -= chargeChange / (3600*_capacity);
 	if( _stateOfCharge <= 0 )
 	{
-		// ---- ToDo: Maybe a warning here or reset battery ----
-		_stateOfCharge = 0;
+		throw CSimException(GetName().c_str(), "State of charge goes below zero.");
 	}
 	return chargeChange*_openCircuitVoltage;
 }

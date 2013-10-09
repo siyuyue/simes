@@ -78,11 +78,11 @@ void CSuperCap::TimeElapse(double time, double timeElapsed)
 	_openCircuitVoltage = sqrt( energyNew * 2 / _capacitance );
 	if( _openCircuitVoltage < _minVoltage )
 	{
-		throw new CSimException(GetName().c_str(), "Super capacitor voltage goes below minimum.");
+		throw CSimException(GetName().c_str(), "Super capacitor voltage goes below minimum.");
 	}
 	else if( _openCircuitVoltage > _maxVoltage)
 	{
-		throw new CSimException(GetName().c_str(), "Super capacitor voltage goes above maximum.");
+		throw CSimException(GetName().c_str(), "Super capacitor voltage goes above maximum.");
 	}
 }
 
@@ -118,6 +118,10 @@ bool CSuperCap::SetProperty(const string &name, const string& value)
 
 string CSuperCap::GetProperty(const string &name) const
 {
+	if( name == string("voltage") )
+	{
+		return ToString<double>(_openCircuitVoltage);
+	}
 	return string();
 }
 

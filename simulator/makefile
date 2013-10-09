@@ -25,15 +25,15 @@ makelib: $(BUILDDIRS) $(LIBRARY)
 	@ echo "Done!"
 
 $(BUILDDIRS):
-	@ echo "Entering directory $@..."
+	@ echo "Entering directory $(@:build-%=%)..."
 	@ $(MAKE) --no-print-directory -C $(@:build-%=%) all
 
 $(CLEANDIRS):
-	@ echo "Entering directory $@..."
+	@ echo "Entering directory $(@:clean-%=%)..."
 	@ $(MAKE) --no-print-directory -C $(@:clean-%=%) clean
 
 $(MKDIRDIRS):
-	@ echo "Entering directory $@..."
+	@ echo "Entering directory $(@:mkdir-%=%)..."
 	@ $(MAKE) --no-print-directory -C $(@:mkdir-%=%) mkdir
 
 $(LIBRARY):

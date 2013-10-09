@@ -1,5 +1,6 @@
 #include <cmath>
 #include "LeadAcidBattery.h"
+#include "SimException.h"
 
 CLeadAcidBattery::CLeadAcidBattery(void)
 {
@@ -87,6 +88,14 @@ void CLeadAcidBattery::TimeElapse(double time, double timeElapsed)
 	else
 		current_eff = current/_mBank;
 	_stateOfCharge += (current_eff)*timeElapsed/(_capacity*3600);
+	if( _stateOfCharge > 1 )
+	{
+		throw CSimException(GetName().c_str(), "State of charge goes above capacity limit.");
+	}
+	if( _stateOfCharge <= 0 )
+	{
+		throw CSimException(GetName().c_str(), "State of charge goes below zero.");
+	}
 	_ccv = PortVoltage(time, _portCurrent);
 }
 
@@ -117,6 +126,10 @@ bool CLeadAcidBattery::SetProperty(const string &name, const string& value)
 
 string CLeadAcidBattery::GetProperty(const string &name) const
 {
+	if( name == string("state_of_charge") )
+	{
+		return ToString<double>(_stateOfCharge);
+	}
 	return string();
 }
 

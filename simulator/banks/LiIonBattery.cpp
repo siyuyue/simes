@@ -1,5 +1,6 @@
 #include <cmath>
 #include "LiIonBattery.h"
+#include "SimException.h"
 
 CLiIonBattery::CLiIonBattery(void)
 {
@@ -76,6 +77,14 @@ void CLiIonBattery::TimeElapse(double time, double timeElapsed)
 	else
 		current_eff = current/_mBank;
 	_stateOfCharge += (current_eff)*timeElapsed/(_capacity*3600);
+	if( _stateOfCharge > 1 )
+	{
+		throw CSimException(GetName().c_str(), "State of charge goes above capacity limit.");
+	}
+	if( _stateOfCharge <= 0 )
+	{
+		throw CSimException(GetName().c_str(), "State of charge goes below zero.");
+	}
 	_consumption += (-current_eff) * GetOpenCircuitVoltage() * timeElapsed;
 	_ccv = PortVoltage(time, _portCurrent);
 }
@@ -123,6 +132,10 @@ bool CLiIonBattery::SetProperty(const string &name, const string& value)
 
 string CLiIonBattery::GetProperty(const string &name) const
 {
+	if( name == string("state_of_charge") )
+	{
+		return ToString<double>(_stateOfCharge);
+	}
 	return string();
 }
 

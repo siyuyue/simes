@@ -181,7 +181,6 @@ CPort * CCTI::GetPort(int id) const
 	{
 		// Error : id out of range
         throw CSimException(GetName().c_str(), "CTI Port id out of range.");
-		return NULL;
 	}
 	return _pPorts[id];
 }

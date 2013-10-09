@@ -11,6 +11,7 @@ using namespace std;
 
 CCommand::CCommand()
 {
+	time = 0;
     type = INVALID;
 }
 
