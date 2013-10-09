@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
             }
         }
     }
-    catch(CSimException e)
+    catch(CSimException &e)
     {
         cout << "[Error!]" << e.componentName << ": " << e.exceptionMessage << endl;
     }
