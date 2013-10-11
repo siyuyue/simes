@@ -1,6 +1,8 @@
 // **********************************************
-// Port.h
-// Definition of CPort base class
+// CPort Class
+// Abstract class
+// A port should define its output current/voltage relationship.
+// Ports are connected by converters.
 // **********************************************
 #pragma once
 #include "config.h"
@@ -12,10 +14,7 @@ enum PortType
 	LOAD, SOURCE, BANK, CTI
 };
 
-// **********************************************
-// CPort Class
-// Abstract class
-// **********************************************
+
 class CPort
 {
 protected:

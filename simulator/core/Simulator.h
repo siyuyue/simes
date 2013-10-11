@@ -1,8 +1,5 @@
-// **********************************************
-// Simulator.h
-// Definition of CSimulator class
-// **********************************************
 #pragma once
+
 #include "Bank.h"
 #include "ChargeManager.h"
 #include "Converter.h"
@@ -71,7 +68,7 @@ private:
 	vector<CSensor*> _pSensors;
 
 	double _time;
-    double _sensorInterval;                     // Minimum interval for sensing
+    double _sensorInterval;                     // Minimum interval for outputting results
     double _lastSensorTime;
 	int _precisionLevel;						// Simulation precision, 10 - most precise, 0 - fastest
 

@@ -1,7 +1,3 @@
-// **********************************************
-// Component.cpp
-// Implementation of CComponent class
-// **********************************************
 #include "Component.h"
 
 CComponent::CComponent(void) : _name("unnamed"), _pSimulator(NULL)
@@ -12,7 +8,7 @@ CComponent::~CComponent(void)
 {
 }
 
-void CComponent::SetName(const string &name)
+void CComponent::SetName(const std::string &name)
 {
 	_name = name;
 }
@@ -38,18 +34,18 @@ void CComponent::CheckIntegrity() const
     return;
 }
 
-bool CComponent::SetProperty(const string &name, const string &value)
+bool CComponent::SetProperty(const std::string &name, const std::string &value)
 {
 	return false;
 }
 
-string CComponent::GetProperty(const string &name) const
+string CComponent::GetProperty(const std::string &name) const
 {
 	return string();
 }
 
 // Output interface
-bool CComponent::SetSensor(const string &name, CSensor &sensor)
+bool CComponent::SetSensor(const std::string &name, CSensor &sensor)
 {
 	return false;
 }

@@ -1,6 +1,5 @@
 // **********************************************
-// SimException.h
-// Definition of CSimException class
+// CSimException class
 // **********************************************
 #pragma once
 

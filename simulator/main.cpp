@@ -69,10 +69,7 @@ int main(int argc, char* argv[])
                 cout << "[Simes](Time = " << pSimulator->GetTime() << "s):";
                 getline(cin, line);
                 command = CCommand::FromString(line);
-                if( command.type != CCommand::SIMULATE )
-                {
-                    command.time = pSimulator->GetTime();
-                }
+                command.time += pSimulator->GetTime();
                 if( command.type == CCommand::INVALID )
                 {
                     cout << "Cannot recognize command." << endl;
@@ -95,7 +92,14 @@ int main(int argc, char* argv[])
             pCommandList = parser.GetCommandList();
             for(vector<CCommand>::iterator it = pCommandList->begin(); it != pCommandList->end(); it++)
             {
-                pSimulator->IssueCommand(*it);
+                if( !pSimulator->IssueCommand(*it) )
+                {
+                    cout << "Command failed to issue." << endl;
+                }
+                if( it->type == CCommand::GET )
+                {
+                    cout << it->targetName << "." << it->propertyName << ":" << it->propertyValue << endl;
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 // **********************************************
-// Component.h
-// Definition of CComponent class
+// CComponent class:
+// - Abstract class, defines the common timing interface
+// - SetProperty and GetProperfy interface to set and get values
 // **********************************************
 #pragma once
 
@@ -13,11 +14,6 @@ using namespace std;
 
 class CSimulator;
 
-// **********************************************
-// CComponent class:
-// - Abstract class, defines the common timing interface
-// - SetProperty and GetProperfy interface to set and get values
-// **********************************************
 class CComponent
 {
 private:

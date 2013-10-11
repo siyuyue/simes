@@ -1,7 +1,6 @@
 // **********************************************
 // CGrid Class:
-// - Inherits from CBankBase
-// - Bi-directional to allow selling back electricity
+// - Inherits from CBankBase since it's bi-directional (allow selling back)
 // **********************************************
 #pragma once
 
@@ -18,7 +17,7 @@ public:
     virtual double GetStateofCharge() const;						// Inherited from CBankBase
     virtual double PortVoltage(double time, double current) const;	// Inherited from CPort
     virtual double MaxOutPortCurrent(double time) const;
-    virtual void Reset();											// Inherited from CTiming
+    virtual void Reset();											// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
 };

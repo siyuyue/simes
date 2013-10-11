@@ -1,5 +1,5 @@
 // **********************************************
-// LoadCreate.cpp
+// CLoadBase factory method
 // Register all load classes here by their names
 // **********************************************
 #include <string>

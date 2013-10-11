@@ -1,5 +1,5 @@
 // **********************************************
-// ChargeManagerCreate.cpp
+// CChargeManagerBase factory method
 // Register all charge manager classes here by their names
 // **********************************************
 #include <string>

@@ -1,5 +1,5 @@
 // **********************************************
-// ConverterCreate.cpp
+// CConverterBase factory method
 // Register all converter classes here by their names
 // **********************************************
 #include "Converter.h"

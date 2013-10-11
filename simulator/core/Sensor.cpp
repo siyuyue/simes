@@ -1,15 +1,9 @@
-// **********************************************
-// Component.cpp
-// Implementation of CSensor class
-// **********************************************
 #include "Sensor.h"
-
 
 CSensor::CSensor(const string &target, const string &prop) : _target(target), _property(prop)
 {
 	_pValue = NULL;
 }
-
 
 CSensor::~CSensor(void)
 {

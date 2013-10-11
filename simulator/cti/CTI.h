@@ -1,8 +1,8 @@
 // **********************************************
-// CTI.h
 // Definition of CCTIPort and CCTI classes
 // **********************************************
 #pragma once
+
 #include "config.h"
 #include "Port.h"
 #include "Component.h"

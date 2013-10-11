@@ -1,8 +1,8 @@
 // **********************************************
-// Parser.h
-// Definition of CParser class
-// Input configuration is written in XML format
-// TinyXML is used as XML parser: http://www.grinninglizard.com/tinyxml/
+// CParser class:
+// - Reads in user written HEES System Simulation configuration file in XML format.
+// - Generate a class representation of the HEES system and return a CSimulator class.
+// TinyXML is used as the internal XML parser: http://www.grinninglizard.com/tinyxml/
 // **********************************************
 #pragma once
 
@@ -13,11 +13,6 @@
 
 using namespace std;
 
-// **********************************************
-// CParser class:
-// - Reads in user written HEES System Simulation configuration file in XML format.
-// - Generate a class representation of the HEES system and return a CSimulator class.
-// **********************************************
 class CParser
 {
 private:

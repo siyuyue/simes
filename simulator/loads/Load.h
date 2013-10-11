@@ -1,6 +1,6 @@
 // **********************************************
 // CLoadBase Class:
-// - Inherits from CPort and CTiming
+// - Inherits from CPort and CComponent
 // - Represents a load in HEES system
 // - Abstract class, used to derive all other load classes
 // **********************************************
@@ -17,5 +17,5 @@ public:
 	virtual ~CLoadBase(void);
     virtual double PortDefaultVoltage(double time) const;				// Default load voltage
     virtual double PortDefaultCurrent(double time) const = 0;			// Default load current
-    static CLoadBase* Create(const string &derivedType);                      // Called by the parser to create a new load
+    static CLoadBase* Create(const string &derivedType);                // Called by the parser to create a new load
 };

@@ -1,7 +1,3 @@
-// **********************************************
-// CTI.cpp
-// Implementation of CCTIPort and CCTI classes
-// **********************************************
 #include "CTI.h"
 #include "SimException.h"
 #include <cmath>

@@ -1,6 +1,6 @@
 // **********************************************
-// Component.h
-// Definition of CSensor class
+// CSensor class
+// Used to output results.
 // **********************************************
 #pragma once
 

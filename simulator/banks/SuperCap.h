@@ -26,7 +26,7 @@ public:
     virtual double GetStateofCharge() const;						// Inherited from CBankBase
     virtual double PortVoltage(double time, double current) const;	// Inherited from CPort
     virtual double MaxOutPortCurrent(double time) const;
-    virtual void Reset();											// Inherited from CTiming
+    virtual void Reset();											// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
     virtual bool SetProperty(const string &name, const string &value);

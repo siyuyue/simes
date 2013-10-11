@@ -59,7 +59,6 @@ double CLUTConverter::FindInputCurrent(double time, bool isInputPortA, double in
         double fr = FindOutputCurrent(time, !isInputPortA, inputVoltage, outputVoltage, xr) - outputCurrent;
         if( (fl > 0 && fr > 0) || (fl < 0 && fr < 0))
         {
-            // Err...
             throw CSimException(GetName().c_str(),"Binary Search Failed.");
         }
         while( xr - xl > EPS )
@@ -126,6 +125,8 @@ bool CLUTConverter::SetProperty(const string &name, const string &value)
 void CLUTConverter::CheckIntegrity() const
 {
     if( _pLUT == NULL )
+    {
         throw CSimException(GetName().c_str(), "Converter lookup table is not set.");
+    }
     return;
 }

@@ -1,7 +1,6 @@
 // **********************************************
-// LookUpTable.h
-// Definition of CLookUpTable class
-// A general n-dimensional lookup table
+// CLookUpTable class
+// A general n-dimensional lookup table, use linear interpolation
 // **********************************************
 #pragma once
 

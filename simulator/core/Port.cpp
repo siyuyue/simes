@@ -1,7 +1,3 @@
-// **********************************************
-// Port.cpp
-// Implementation of CPort base class
-// **********************************************
 #include "Port.h"
 #include "Converter.h"
 

@@ -2,7 +2,7 @@
 
 CSimpleConverter::CSimpleConverter(void)
 {
-	_efficiency = 0.9;
+	_efficiency = 1;
 }
 
 CSimpleConverter::~CSimpleConverter()

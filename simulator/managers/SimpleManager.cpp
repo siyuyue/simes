@@ -19,7 +19,7 @@ bool CSimpleManager::IsDecisionEpoch(double time) const
 	return false;
 }
 
-void CSimpleManager::Decision(double time, std::vector<CLoadBase*> pLoads, std::vector<CBankBase*> pBanks, std::vector<CSourceBase*> pSources, std::vector<CConverterBase*> pConverters, std::vector<CCTI*> pCTIs)
+void CSimpleManager::Decision(double time, vector<CLoadBase*> pLoads, vector<CBankBase*> pBanks, vector<CSourceBase*> pSources, vector<CConverterBase*> pConverters, vector<CCTI*> pCTIs)
 {
 	_nextDecisionTime += _period;
 }

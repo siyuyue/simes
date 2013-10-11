@@ -1,5 +1,5 @@
 // **********************************************
-// SourceCreate.cpp
+// CSourceBase factory method
 // Register all source classes here by their names
 // **********************************************
 #include <string>

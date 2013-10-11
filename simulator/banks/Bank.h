@@ -1,6 +1,6 @@
 // **********************************************
 // CBankBase Class:
-// - Inherits from CPort and CTiming
+// - Inherits from CPort and CComponent
 // - Represents a storage bank in HEES system
 // - Abstract class, used to derive all other bank classes
 // **********************************************

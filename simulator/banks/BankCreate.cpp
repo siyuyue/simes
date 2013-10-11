@@ -1,5 +1,5 @@
 // **********************************************
-// BankCreate.cpp
+// CBankBase factory method
 // Register all bank classes here by their names
 // **********************************************
 #include "Bank.h"

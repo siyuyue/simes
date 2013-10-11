@@ -1,7 +1,3 @@
-// **********************************************
-// SimException.cpp
-// Implementation of CSimException class
-// **********************************************
 #include "SimException.h"
 
 CSimException::CSimException(const char *name, const char *message) : componentName(name), exceptionMessage(message)

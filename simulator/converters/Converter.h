@@ -1,6 +1,6 @@
 // **********************************************
 // CConverterBase class:
-// - Inherited from CTiming
+// - Inherited from CComponent
 // - Join two CPort
 // - Abstract class
 // **********************************************

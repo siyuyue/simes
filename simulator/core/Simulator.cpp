@@ -1,7 +1,3 @@
-// **********************************************
-// Simulator.cpp
-// Implementation of CSimulator class
-// **********************************************
 #include "Simulator.h"
 #include "SimException.h"
 #include <iostream>
@@ -112,7 +108,7 @@ void CSimulator::Reset()
 	}
 	_sensorOutput.close();
 	_sensorOutput.clear();
-	_sensorOutput.open(string(_projectName+string("_sensor.out")).c_str());
+	_sensorOutput.open(string(_projectName+string(".out")).c_str());
 	_sensorOutput << "Time";
 	for( vector<CSensor *>::iterator it = _pSensors.begin(); it != _pSensors.end(); it++ )
 	{

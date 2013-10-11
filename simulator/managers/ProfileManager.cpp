@@ -21,7 +21,7 @@ bool CProfileManager::IsDecisionEpoch(double time) const
 	return true;
 }
 
-void CProfileManager::Decision(double time, std::vector<CLoadBase*> pLoads, std::vector<CBankBase*> pBanks, std::vector<CSourceBase*> pSources, std::vector<CConverterBase*> pConverters, std::vector<CCTI*> pCTIs)
+void CProfileManager::Decision(double time, vector<CLoadBase*> pLoads, vector<CBankBase*> pBanks, vector<CSourceBase*> pSources, vector<CConverterBase*> pConverters, vector<CCTI*> pCTIs)
 {
 	for(vector<CBankBase*>::iterator it = pBanks.begin(); it != pBanks.end(); it++ )
 	{

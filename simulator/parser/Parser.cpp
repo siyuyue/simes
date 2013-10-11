@@ -1,7 +1,3 @@
-// **********************************************
-// Parser.cpp
-// Implementation of CParser class
-// **********************************************
 #include <string>
 #include <sstream>
 #include <algorithm>

@@ -5,7 +5,6 @@
 CLiIonBattery::CLiIonBattery(void)
 {
 	_stateOfCharge = 1;
-	//_capacity = 0.35;		//total capacity of the bank in Ah
 	_capacity = 2.6;
 	_mBank = 1;
 	_nBank = 1;
@@ -13,12 +12,9 @@ CLiIonBattery::CLiIonBattery(void)
 	_peukertCharge = 1./1.1;
 	_peukertDischarge = 1.2;
 
-    // Data is measured from 2 Li-ion batteries in series, so divide V, R and C by 2
-	double cali_r = 0.5;
-
 	_b11 = -0.67;   _b12 = -16.21;  _b13 = -0.03;
 	_b14 = 1.28;    _b15 =  -0.40;  _b16 = 7.55;
-	_b21 = 0.10 * cali_r;    _b22 = -4.32;   _b23 = 0.34 * cali_r;
+	_b21 = 0.05;    _b22 = -4.32;   _b23 = 0.17;
 }
 
 CLiIonBattery::~CLiIonBattery(void)

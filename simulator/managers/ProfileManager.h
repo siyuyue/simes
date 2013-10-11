@@ -13,14 +13,14 @@ private:
 	int _bankNumber;
 	int _ctiNumber;
 	int _idx;
-	std::vector<double> _time;
-	std::map<string, vector<double>*> _ctiVoltages;
-    std::map<string, vector<double>*> _bankCurrents;
+	vector<double> _time;
+	map<string, vector<double>*> _ctiVoltages;
+    map<string, vector<double>*> _bankCurrents;
 public:
 	CProfileManager(void);
 	virtual ~CProfileManager(void);
     virtual bool IsDecisionEpoch(double time) const;
-	virtual void Decision(double time, std::vector<CLoadBase*> pLoads, std::vector<CBankBase*> pBanks, std::vector<CSourceBase*> pSources, std::vector<CConverterBase*> pConverters, vector<CCTI*> pCTIs);
+	virtual void Decision(double time, vector<CLoadBase*> pLoads, vector<CBankBase*> pBanks, vector<CSourceBase*> pSources, vector<CConverterBase*> pConverters, vector<CCTI*> pCTIs);
 	virtual void Reset();
     virtual double NextTimeStep(double time, int precision) const;
 	virtual void TimeElapse(double time, double timeElapsed);

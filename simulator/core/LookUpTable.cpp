@@ -1,6 +1,3 @@
-// **********************************************
-// LookUpTable.cpp
-// **********************************************
 #include "LookUpTable.h"
 #include "SimException.h"
 
@@ -46,10 +43,6 @@ CLookUpTable::~CLookUpTable(void)
 
 double CLookUpTable::LookUp(double idx)
 {
-	if( _dimension != 1 )
-	{
-        throw CSimException("LookupTable","Dimension does not match.");
-	}
 	vector<double> ids;
 	ids.push_back(idx);
 	return LookUp(ids);
@@ -57,10 +50,6 @@ double CLookUpTable::LookUp(double idx)
 
 double CLookUpTable::LookUp(double idx, double idy)
 {
-	if( _dimension != 2 )
-	{
-        throw CSimException("LookupTable","Dimension does not match.");
-	}
 	vector<double> ids;
 	ids.push_back(idx);
 	ids.push_back(idy);
@@ -69,10 +58,6 @@ double CLookUpTable::LookUp(double idx, double idy)
 
 double CLookUpTable::LookUp(double idx, double idy, double idz)
 {
-	if( _dimension != 3 )
-	{
-        throw CSimException("LookupTable","Dimension does not match.");
-	}
 	vector<double> ids;
 	ids.push_back(idx);
 	ids.push_back(idy);

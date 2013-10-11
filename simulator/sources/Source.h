@@ -1,6 +1,6 @@
 // **********************************************
 // CSourceBase Class:
-// - Inherits from CPort and CTiming
+// - Inherits from CPort and CComponent
 // - Represents a power source in HEES system
 // - Abstract class, used to derive all other source classes
 // **********************************************
