@@ -1,0 +1,6 @@
+# QT Creater Configurations
+*.pro.user
+
+# QT Build directory
+bin/
+genfile/

@@ -18,7 +18,7 @@ ARFLAGS=rcf
 LIBRARY=$(addprefix lib/, libsimulator.a)
 EXECUTABLE=$(addprefix bin/, simulator)
 
-all: $(BUILDDIRS) $(LIBRARY) $(EXECUTABLE)
+all: mkdir $(BUILDDIRS) $(LIBRARY) $(EXECUTABLE)
 	@ echo "Done!"
 
 makelib: $(BUILDDIRS) $(LIBRARY)

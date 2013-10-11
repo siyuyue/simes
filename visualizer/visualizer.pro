@@ -4,13 +4,18 @@
 #
 #-------------------------------------------------
 
-QT       += core gui printsupport
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = visualizer
 TEMPLATE = app
 
+DESTDIR = bin
+OBJECTS_DIR = genfile/obj
+MOC_DIR = genfile/moc
+RCC_DIR = genfile/rcc
+UI_DIR = genfile/ui
 
 SOURCES += \
     mainwindow.cpp \
