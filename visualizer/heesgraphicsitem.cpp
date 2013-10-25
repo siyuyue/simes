@@ -23,11 +23,11 @@ HEESGraphicsItem::HEESGraphicsItem(int t)
         break;
     case BANK:
         path.moveTo(xPos, yPos);
-        path.arcTo(xPos - 39, yPos - 10, 40, 20, 0, 360);
+        path.arcTo(xPos - 40, yPos - 10, 40, 21, 0, 360);
         path.lineTo(xPos, yPos + 40);
-        path.arcTo(xPos - 39, yPos + 40, 40, 20, 0, -180);
-        path.lineTo(xPos - 39, yPos);
-        path.arcTo(xPos - 39, yPos - 10, 40, 20, 180, 180);
+        path.arcTo(xPos - 40, yPos + 40, 40, 21, 0, -180);
+        path.lineTo(xPos - 40, yPos);
+        path.arcTo(xPos - 40, yPos - 10, 40, 21, 180, 180);
         myPolygon = path.toFillPolygon();
         break;
     case LOAD:

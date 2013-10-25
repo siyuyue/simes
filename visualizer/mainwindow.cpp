@@ -124,6 +124,7 @@ void MainWindow::openFile()
         if( pNodeElement != NULL )
         {
             projectName = QString(pNodeElement->GetText());
+			ui->projectEdit->setText(projectName);
         }
         std::map<QString, HEESGraphicsItem*> nameIndex;
         // First pass: add components
