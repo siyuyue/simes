@@ -1,3 +1,7 @@
+// **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+// **********************************************
 #include "Sensor.h"
 
 CSensor::CSensor(const string &target, const string &prop) : _target(target), _property(prop)

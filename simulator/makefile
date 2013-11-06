@@ -1,4 +1,5 @@
-# Comment goes here.
+# Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+# University of Southern California
 
 INCLUDE_PATH=../tinyxml core banks converters sources loads cti managers parser
 SUBDIRS=$(INCLUDE_PATH)
@@ -32,10 +33,6 @@ $(CLEANDIRS):
 	@ echo "Entering directory $(@:clean-%=%)..."
 	@ $(MAKE) --no-print-directory -C $(@:clean-%=%) clean
 
-$(MKDIRDIRS):
-	@ echo "Entering directory $(@:mkdir-%=%)..."
-	@ $(MAKE) --no-print-directory -C $(@:mkdir-%=%) mkdir
-
 $(LIBRARY):
 	@ echo "Compiling simulator library..."
 	@ $(AR) $(ARFLAGS) $(LIBRARY) $(OBJECTS)
@@ -49,11 +46,12 @@ clean: $(CLEANDIRS)
 	@ rm -f $(LIBRARY)
 	@ rm -f $(EXECUTABLE)
 
-mkdir: $(MKDIRDIRS)
+mkdir:
 	@ mkdir -p lib
 	@ mkdir -p bin
 
 .PHONY: $(BUILDDIRS)
 .PHONY: $(CLEANDIRS)
-.PHONY: $(MKDIRDIRS)
 .PHONY: $(LIBRARY)
+.PHONY: clean
+.PHONY: mkdir

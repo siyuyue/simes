@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CGrid Class:
 // - Inherits from CBankBase since it's bi-directional (allow selling back)
 // **********************************************

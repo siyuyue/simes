@@ -1,3 +1,7 @@
+// **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+// **********************************************
 #include <cmath>
 #include "LeadAcidBattery.h"
 #include "SimException.h"

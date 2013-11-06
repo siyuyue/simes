@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CLUTConverter class:
 // - Inherited from CConverterBase
 // - Efficiency data from a look up table

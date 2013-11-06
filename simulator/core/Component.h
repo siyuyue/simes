@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CComponent class:
 // - Abstract class, defines the common timing interface
 // - SetProperty and GetProperfy interface to set and get values

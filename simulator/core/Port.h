@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CPort Class
 // Abstract class
 // A port should define its output current/voltage relationship.

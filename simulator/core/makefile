@@ -1,4 +1,5 @@
-# Comment goes here.
+# Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+# University of Southern California
 
 INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
 CLASSES=Component Port LookUpTable Sensor SimException Simulator
@@ -11,7 +12,7 @@ HEADERS=$(addsuffix .h, $(CLASSES)) config.h
 OBJECTS=$(addprefix obj/, $(SOURCES:.cpp=.o))
 DEPS=$(OBJECTS:.o=.d)
 
-all: $(SOURCES) $(HEADERS) $(OBJECTS)
+all: mkdir $(SOURCES) $(HEADERS) $(OBJECTS)
 	@ echo "Done!"
 
 obj/%.o: %.cpp
@@ -25,5 +26,8 @@ clean:
 
 mkdir:
 	@ mkdir -p obj
+
+.PHONY: clean
+.PHONY: mkdir
 
 -include $(DEPS)

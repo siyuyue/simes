@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CSuperCap Class:
 // - Inherits from CBankBase
 // - Ideal capacitor with serial connected internal resistance and self discharge

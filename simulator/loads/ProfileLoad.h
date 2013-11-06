@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CProfileLoad Class:
 // - Inherits from CLoadBase
 // - Load profile given in a input file

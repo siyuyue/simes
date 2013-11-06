@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CProfileManager class:
 // - Inherited from ChargeManagerBase
 // - Sets up bank current and cti target voltage based on an input file

@@ -1,3 +1,7 @@
+// **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+// **********************************************
 #include "ProfileLoad.h"
 #include "Simulator.h"
 #include "SimException.h"

@@ -1,5 +1,3 @@
-# Comment goes here.
-
 CC=g++
 CFLAGS=-o2 -c -Wall
 

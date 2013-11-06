@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CLeadAcidBattery Class:
 // - Inherits from CBankBase
 // - One type of lead-acid battery model

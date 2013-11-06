@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CSourceBase Class:
 // - Inherits from CPort and CComponent
 // - Represents a power source in HEES system

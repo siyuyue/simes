@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CParser class:
 // - Reads in user written HEES System Simulation configuration file in XML format.
 // - Generate a class representation of the HEES system and return a CSimulator class.

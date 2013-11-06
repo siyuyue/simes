@@ -1,4 +1,7 @@
 // **********************************************
+// Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+// University of Southern California
+//
 // CSimpleBattery Class:
 // - Inherits from CBankBase
 // - Ideal battery with constant open circuit voltage and internal resister
