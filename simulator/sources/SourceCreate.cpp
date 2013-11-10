@@ -8,6 +8,7 @@
 #include <string>
 #include "Source.h"
 #include "IdealVoltageSource.h"
+#include "ProfileSource.h"
 
 CSourceBase* CSourceBase::Create(const string &derivedType)
 {
@@ -15,5 +16,9 @@ CSourceBase* CSourceBase::Create(const string &derivedType)
 	{
 		return new CIdealVoltageSource();
 	}
+    if( derivedType == string("ProfileVoltageSource") )
+    {
+        return new CProfileSource();
+    }
 	return NULL;
 }

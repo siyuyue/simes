@@ -5,7 +5,7 @@ SOURCES=tinystr.cpp tinyxml.cpp tinyxmlerror.cpp tinyxmlparser.cpp
 HEADERS=tinystr.h tinyxml.h
 OBJECTS=$(addprefix obj/, $(SOURCES:.cpp=.o))
 
-all: $(SOURCES) $(HEADERS) $(OBJECTS)
+all: mkdir $(SOURCES) $(HEADERS) $(OBJECTS)
 	@ echo "Done!"
 
 obj/%.o: %.cpp
@@ -18,3 +18,6 @@ clean:
 
 mkdir:
 	@ mkdir -p obj
+
+.PHONY: clean
+.PHONY: mkdir
