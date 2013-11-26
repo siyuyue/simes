@@ -85,7 +85,7 @@ void CLiIonBattery::TimeElapse(double time, double timeElapsed)
 	{
 		throw CSimException(GetName().c_str(), "State of charge goes below zero.");
 	}
-	_consumption += (-current_eff) * GetOpenCircuitVoltage() * timeElapsed;
+	_consumption += (-current_eff * _mBank) * GetOpenCircuitVoltage() * timeElapsed;
 	_ccv = PortVoltage(time, _portCurrent);
 }
 

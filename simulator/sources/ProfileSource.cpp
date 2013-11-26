@@ -24,7 +24,7 @@ void CProfileSource::Reset()
 
 double CProfileSource::PortVoltage(double time, double current) const
 {
-    if( current >= _current[_idx] )
+    if( current > _current[_idx] )
     {
         return 0;
     }

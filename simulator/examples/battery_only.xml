@@ -1,9 +1,10 @@
 <?xml version="1.0" ?>
 <project>
-    <name>test</name>
+    <name>battery_only</name>
     <comp type="manager">
         <name>manager</name>
-        <derived type="SimpleManager">
+        <derived type="SimpleRegenManager">
+            <period>1</period>
         </derived>
     </comp>
     <comp type="cti">
@@ -62,6 +63,8 @@
         </derived>
     </comp>
     <sensor target="liion" property="state_of_charge"/>
+    <sensor target="liion" property="consumption"/>
     <sensor target="motor" property="consumption"/>
+    <sensor target="regen" property="generation"/>
     <cmd time="1800" type="finish" />
 </project>
