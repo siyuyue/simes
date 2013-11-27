@@ -16,6 +16,12 @@ private:
     string _batteryBankName;
     string _superCapBankName;
     int _type;          // type of heuristic: 1-5
+    double _powerThresholdDischarge;
+    double _powerThresholdCharge;
+    double _maxCurrentDischarge;
+    double _maxCurrentCharge;
+    double _scVoltageMin;
+    double _scVoltageMax;
 public:
     CHeuristicManager(void);
     virtual ~CHeuristicManager(void);

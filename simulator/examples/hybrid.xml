@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <project>
-    <name>battery_only</name>
+    <name>hybrid</name>
     <comp type="manager">
         <name>manager</name>
-        <derived type="SimpleRegenManager">
+        <derived type="HeuristicManager">
             <period>1</period>
         </derived>
     </comp>
@@ -22,6 +22,14 @@
             <capacity>3.1</capacity>
             <m_bank>18</m_bank>
             <n_bank>101</n_bank>
+        </derived>
+    </comp>
+    <comp type="bank">
+        <name>SC</name>
+        <derived type="SuperCapacitor">
+            <voltage>300</voltage>
+            <capacitance>15</capacitance>
+            <max_voltage>400</max_voltage>
         </derived>
     </comp>
     <comp type="source">
@@ -62,9 +70,18 @@
             <efficiency>0.95</efficiency>
         </derived>
     </comp>
+    <comp type="converter">
+        <name>Conv4</name>
+        <port_a>SC</port_a>
+        <port_b>CTI</port_b>
+        <derived type="SimpleConverter">
+            <efficiency>0.95</efficiency>
+        </derived>
+    </comp>
     <sensor target="Liion" property="state_of_charge"/>
     <sensor target="Liion" property="consumption"/>
     <sensor target="motor" property="consumption"/>
     <sensor target="regen" property="generation"/>
+    <sensor target="SC" property="voltage"/>
     <cmd time="1800" type="finish" />
 </project>

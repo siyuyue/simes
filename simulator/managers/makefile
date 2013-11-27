@@ -2,7 +2,7 @@
 # University of Southern California
 
 INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
-CLASSES=ChargeManager SimpleManager SimpleRegenManager ProfileManager PulseManager
+CLASSES=ChargeManager SimpleManager SimpleRegenManager ProfileManager PulseManager HeuristicManager
 
 CC=g++
 CFLAGS=-O2 -c $(addprefix -I, $(INCLUDE_PATH))
