@@ -22,6 +22,17 @@ private:
     double _maxCurrentCharge;
     double _scVoltageMin;
     double _scVoltageMax;
+    double _kp;
+    double _ki;
+    double _errIntegral;
+    double _scVoltageRef;
+    vector<double> _time;
+    vector<double> _speed;
+    int _idx;
+    double _hysterisRefLow;
+    double _hysterisRefHigh;
+    double _hysterisDischarge;
+    double _hysterisCharge;
 public:
     CHeuristicManager(void);
     virtual ~CHeuristicManager(void);

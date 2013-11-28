@@ -136,6 +136,10 @@ string CLiIonBattery::GetProperty(const string &name) const
 	{
 		return ToString<double>(_stateOfCharge);
 	}
+	if( name == string("consumption") )
+	{
+		return ToString<double>(_consumption);
+	}
 	return string();
 }
 

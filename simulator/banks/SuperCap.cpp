@@ -126,6 +126,10 @@ string CSuperCap::GetProperty(const string &name) const
 	{
 		return ToString<double>(_openCircuitVoltage);
 	}
+	if( name == string("capacitance") )
+	{
+		return ToString<double>(_capacitance);
+	}
 	return string();
 }
 

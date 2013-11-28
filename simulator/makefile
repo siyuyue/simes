@@ -19,7 +19,7 @@ ARFLAGS=rcf
 LIBRARY=$(addprefix lib/, libsimulator.a)
 EXECUTABLE=$(addprefix bin/, simulator)
 
-all: mkdir $(BUILDDIRS) $(LIBRARY) $(EXECUTABLE)
+all: mkdir $(BUILDDIRS) $(LIBRARY) $(EXECUTABLE) bin/simhybrid
 	@ echo "Done!"
 
 makelib: $(BUILDDIRS) $(LIBRARY)
@@ -40,6 +40,10 @@ $(LIBRARY):
 $(EXECUTABLE): $(LIBRARY)
 	@ echo "Compiling simulator..."
 	@ $(CC) $(CFLAGS) main.cpp -Llib -lsimulator -o $@
+
+bin/simhybrid: $(LIBRARY)
+	@ echo "Compiling simhybrid..."
+	@ $(CC) $(CFLAGS) mainhybrid.cpp -Llib -lsimulator -o $@
 
 clean: $(CLEANDIRS)
 	@ echo "Cleaning..."

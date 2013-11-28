@@ -4,7 +4,11 @@
     <comp type="manager">
         <name>manager</name>
         <derived type="HeuristicManager">
+            <type>5</type>
             <period>1</period>
+            <power_threshold_discharge>20000</power_threshold_discharge>
+            <power_threshold_charge>20000</power_threshold_charge>
+            <speed_profile>speed.txt</speed_profile>
         </derived>
     </comp>
     <comp type="cti">
@@ -51,7 +55,7 @@
         <port_a>Liion</port_a>
         <port_b>CTI</port_b>
         <derived type="SimpleConverter">
-            <efficiency>0.95</efficiency>
+            <efficiency>0.98</efficiency>
         </derived>
     </comp>
     <comp type="converter">
@@ -59,7 +63,7 @@
         <port_a>regen</port_a>
         <port_b>CTI</port_b>
         <derived type="SimpleConverter">
-            <efficiency>0.95</efficiency>
+            <efficiency>0.98</efficiency>
         </derived>
     </comp>
     <comp type="converter">
@@ -67,7 +71,7 @@
         <port_a>motor</port_a>
         <port_b>CTI</port_b>
         <derived type="SimpleConverter">
-            <efficiency>0.95</efficiency>
+            <efficiency>0.98</efficiency>
         </derived>
     </comp>
     <comp type="converter">
@@ -75,7 +79,7 @@
         <port_a>SC</port_a>
         <port_b>CTI</port_b>
         <derived type="SimpleConverter">
-            <efficiency>0.95</efficiency>
+            <efficiency>0.98</efficiency>
         </derived>
     </comp>
     <sensor target="Liion" property="state_of_charge"/>

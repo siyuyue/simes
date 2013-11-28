@@ -90,6 +90,10 @@ bool CProfileSource::SetProperty(const string &name, const string &value)
 
 string CProfileSource::GetProperty(const string &name) const
 {
+    if( name == string("generation") )
+    {
+        return ToString<double>(_generation);
+    }
     return string();
 }
 
