@@ -9,6 +9,7 @@
 #include "ChargeManager.h"
 #include "SimpleManager.h"
 #include "ProfileManager.h"
+#include "PulseManager.h"
 
 CChargeManagerBase *CChargeManagerBase::Create(const string &derivedType)
 {
@@ -20,5 +21,9 @@ CChargeManagerBase *CChargeManagerBase::Create(const string &derivedType)
 	{
 		return new CProfileManager();
 	}
+    if( derivedType == string("PulseManager") )
+    {
+        return new CPulseManager();
+    }
 	return NULL;
 }

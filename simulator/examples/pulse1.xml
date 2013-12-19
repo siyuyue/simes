@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<project>
+    <name>pulse1</name>
+    <comp type="manager">
+        <name>manager</name>
+        <derived type="SimpleManager">
+        </derived>
+    </comp>
+    <comp type="cti">
+        <name>CTI</name>
+        <derived>
+            <voltage_regulator>Conv1</voltage_regulator>
+            <voltage>4</voltage>
+            <target_voltage>4</target_voltage>
+            <capacitance>0.001</capacitance>
+        </derived>
+    </comp>
+    <comp type="bank">
+        <name>liion</name>
+        <derived type="LiIonBattery">
+            <capacity>1.3</capacity>
+            <m_bank>1</m_bank>
+            <n_bank>1</n_bank>
+        </derived>
+    </comp>
+    <comp type="load">
+        <name>motor</name>
+        <derived type="ProfileLoad">
+            <voltage>1</voltage>
+            <input_file>pulseload.txt</input_file>
+        </derived>
+    </comp>
+    <comp type="converter">
+        <name>Conv1</name>
+        <port_a>liion</port_a>
+        <port_b>CTI</port_b>
+        <derived type="SimpleConverter">
+            <efficiency>0.95</efficiency>
+        </derived>
+    </comp>
+    <comp type="converter">
+        <name>Conv2</name>
+        <port_a>motor</port_a>
+        <port_b>CTI</port_b>
+        <derived type="SimpleConverter">
+            <efficiency>0.95</efficiency>
+        </derived>
+    </comp>
+    <sensor target="liion" property="consumption"/>
+    <sensor target="motor" property="consumption"/>
+    <cmd time="120" type="finish" />
+</project>

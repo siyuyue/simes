@@ -12,7 +12,7 @@ CConverterBase::CConverterBase(void)
 	_pPortB = NULL;
 	_outputCurrent = 0;
 	_inputCurrent = 0;
-	_maxIter = 1000;
+	_maxIter = 10000;
 }
 
 CConverterBase::~CConverterBase(void)

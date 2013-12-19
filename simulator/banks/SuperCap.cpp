@@ -52,7 +52,7 @@ double CSuperCap::MaxOutPortCurrent(double time) const
 
 void CSuperCap::Reset()
 {
-	;
+	_consumption = 0;
 }
 
 double CSuperCap::NextTimeStep(double time, int precision) const
@@ -88,6 +88,7 @@ void CSuperCap::TimeElapse(double time, double timeElapsed)
 	{
 		throw CSimException(GetName().c_str(), "Super capacitor voltage goes above maximum.");
 	}
+	_consumption -= energyChanged;
 }
 
 bool CSuperCap::SetProperty(const string &name, const string& value)
@@ -126,6 +127,14 @@ string CSuperCap::GetProperty(const string &name) const
 	{
 		return ToString<double>(_openCircuitVoltage);
 	}
+	if( name == string("capacitance") )
+	{
+		return ToString<double>(_capacitance);
+	}
+	if( name == string("consumption") )
+	{
+		return ToString<double>(_consumption);
+	}
 	return string();
 }
 
@@ -139,6 +148,11 @@ bool CSuperCap::SetSensor(const string &name, CSensor &sensor)
 	if( name == string("current") )
 	{
 		sensor.SetPointer(&_portCurrent);
+		return true;
+	}
+	if( name == string("consumption") )
+	{
+		sensor.SetPointer(&_consumption);
 		return true;
 	}
 	return false;

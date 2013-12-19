@@ -63,7 +63,6 @@ CSimulator::CSimulator(void)
 	_pManager = NULL;
 	_time = 0;
     _sensorInterval = 0;
-    _lastSensorTime = -1e10;
 	_precisionLevel = 0;
 }
 
@@ -119,6 +118,7 @@ void CSimulator::Reset()
 		_sensorOutput << " \t" << (*it)->GetTargetPropertyString();
 	}
 	_sensorOutput << endl;
+    _lastSensorTime = -1e10;
 }
 
 void CSimulator::Run(double timeToRun)

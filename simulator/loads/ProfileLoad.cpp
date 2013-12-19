@@ -91,6 +91,10 @@ bool CProfileLoad::SetProperty(const string &name, const string &value)
 
 string CProfileLoad::GetProperty(const string &name) const
 {
+	if( name == string("consumption") )
+	{
+		return ToString<double>(_consumption);
+	}
 	return string();
 }
 
