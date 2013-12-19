@@ -13,8 +13,8 @@ CLiIonBattery::CLiIonBattery(void)
 	_mBank = 1;
 	_nBank = 1;
 	// Li-ion Battery parameters
-	_peukertCharge = 1./1.1;
-	_peukertDischarge = 1.2;
+	_peukertCharge = 1./1.4;
+	_peukertDischarge = 1.05;
 
 	_b11 = -0.67;   _b12 = -16.21;  _b13 = -0.03;
 	_b14 = 1.28;    _b15 =  -0.40;  _b16 = 7.55;
@@ -69,11 +69,11 @@ void CLiIonBattery::TimeElapse(double time, double timeElapsed)
 	double current_eff;
     double Rs;
 	Rs = (_b21*exp(_b22*_stateOfCharge)+_b23 ) / 2;
-	if (abs(current/_mBank) > _capacity)
+	if (abs(current/_mBank) > _capacity/20.)
 		if (current/_mBank > 0)
-			current_eff = pow((abs(current/_mBank/_capacity)),_peukertCharge) * _capacity;
+			current_eff = pow((abs(current/_mBank/(_capacity/20.))),_peukertCharge) * _capacity/20.;
 		else
-			current_eff = -pow((abs(current/_mBank/_capacity)),_peukertDischarge) * _capacity;
+			current_eff = -pow((abs(current/_mBank/(_capacity/20.))),_peukertDischarge) * _capacity/20.;
 	else
 		current_eff = current/_mBank;
 	_stateOfCharge += (current_eff)*timeElapsed/(_capacity*3600);

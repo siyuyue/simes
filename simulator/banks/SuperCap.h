@@ -21,6 +21,7 @@ private:
 	double _minVoltage;
 	double _maxVoltage;
 	double _maxPower;
+    double _consumption;
 
 public:
 	CSuperCap(void);
