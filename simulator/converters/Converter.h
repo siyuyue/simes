@@ -9,12 +9,21 @@
 // **********************************************
 #pragma once
 
+#include <boost/function.hpp>
+#include <boost/functional/factory.hpp>
+#include <string>
+#include <map>
+
 #include "config.h"
 #include "Component.h"
 #include "Port.h"
 
+using namespace std;
+
 class CConverterBase : public CComponent
 {
+private:
+    static map<string, boost::function<CConverterBase*()> > factories;
 protected:
 	CPort *_pPortA;
 	CPort *_pPortB;
@@ -38,4 +47,5 @@ public:
     virtual string GetProperty(const string &name) const;
     virtual bool SetSensor(const string &name, CSensor &sensor);
     static CConverterBase* Create(const string &derivedType);
+    static void Initialize();
 };

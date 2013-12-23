@@ -1,7 +1,7 @@
 # Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 # University of Southern California
 
-INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser
+INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser $(BOOST_ROOT)
 CLASSES=Component Port LookUpTable Sensor SimException Simulator
 
 CC=g++

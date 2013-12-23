@@ -226,11 +226,6 @@ void CCTI::TimeElapse(double time, double timeElapsed)
 	_voltage = sqrt(2 * energy / _capacitance);
 }
 
-CCTI* CCTI::Create()
-{
-	return new CCTI();
-}
-
 void CCTI::CheckIntegrity() const
 {
     if( _pVoltageRegulator == NULL )
@@ -296,4 +291,13 @@ bool CCTI::SetSensor(const string &name, CSensor &sensor)
 		return true;
 	}
 	return false;
+}
+
+
+CCTI* CCTI::Create()
+{
+	return new CCTI();
+}
+
+void CCTI::Initialize() {
 }

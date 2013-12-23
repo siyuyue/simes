@@ -50,6 +50,7 @@ bool operator < (const CCommand &c1, const CCommand &c2);
 class CSimulator
 {
 private:
+    static bool _initialized;
 	string _projectName;
     string _pathPrefix;
 	set<string> _usedNames;
@@ -109,4 +110,5 @@ public:
     CCTI*				GetCTI(const string &name) const;
     CConverterBase*     GetConverter(const string &name) const;
     CComponent*     	GetComponent(const string &name) const;
+    static void Initialize();
 };

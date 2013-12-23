@@ -9,6 +9,8 @@
 
 using namespace std;
 
+bool CSimulator::_initialized = false;
+
 CCommand::CCommand()
 {
 	time = 0;
@@ -123,6 +125,9 @@ void CSimulator::Reset()
 
 void CSimulator::Run(double timeToRun)
 {
+    if (!_initialized) {
+        throw CSimException("Simulator", "CSimulator class is not initialized.");
+    }
     try
     {
         while(_time < timeToRun)
@@ -497,4 +502,16 @@ CComponent* CSimulator::GetComponent(const string &name) const
 	}
 	// Component not found
 	return NULL;
+}
+
+void CSimulator::Initialize() {
+    if (!_initialized) {
+        CConverterBase::Initialize();
+        CBankBase::Initialize();
+        CLoadBase::Initialize();
+        CSourceBase::Initialize();
+        CChargeManagerBase::Initialize();
+        CCTI::Initialize();
+        _initialized = true;
+    }
 }

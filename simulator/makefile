@@ -1,8 +1,8 @@
 # Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 # University of Southern California
 
-INCLUDE_PATH=../tinyxml core banks converters sources loads cti managers parser
-SUBDIRS=$(INCLUDE_PATH)
+INCLUDE_PATH=../tinyxml core banks converters sources loads cti managers parser $(BOOST_ROOT)
+SUBDIRS=../tinyxml core banks converters sources loads cti managers parser
 
 OBJECTS=$(addsuffix /obj/*.o, $(SUBDIRS))
 

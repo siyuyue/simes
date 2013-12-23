@@ -48,6 +48,8 @@ int main(int argc, char* argv[])
             }
         }
     }
+    // Main body
+    CSimulator::Initialize();
     CParser parser;
     CSimulator *pSimulator = NULL;
     vector<CCommand> *pCommandList = NULL;

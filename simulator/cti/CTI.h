@@ -61,6 +61,7 @@ public:
 	CPort * NewPort();											// Create a new CTI port
     CPort * GetPort(int id) const;								// Get id-th CTI port
 	static CCTI* Create();										// Called by the parser to create a new CTI
+    static void Initialize();
 	
     virtual void Reset();										// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;

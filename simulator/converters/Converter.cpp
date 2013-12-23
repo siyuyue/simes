@@ -4,7 +4,14 @@
 // **********************************************
 #include <cmath>
 #include "Converter.h"
+#include "SimpleConverter.h"
+#include "DCDCConverter.h"
+#include "LUTConverter.h"
 #include "SimException.h"
+
+using namespace std;
+
+map<string, boost::function<CConverterBase*()> > CConverterBase::factories;
 
 CConverterBase::CConverterBase(void)
 {
@@ -232,4 +239,19 @@ bool CConverterBase::SetSensor(const string &name, CSensor &sensor)
         return true;
     }
     return false;
+}
+
+CConverterBase* CConverterBase::Create(const string &derivedType)
+{
+	if (factories.find(derivedType) == factories.end()) {
+        return NULL;
+    }
+    return factories[derivedType](); 
+}
+
+
+void CConverterBase::Initialize() {
+	factories["SimpleConverter"] = boost::factory<CSimpleConverter*>();
+	factories["DCDCConverter"] = boost::factory<CDCDCConverter*>();
+	factories["LUTConverter"] = boost::factory<CLUTConverter*>();
 }
