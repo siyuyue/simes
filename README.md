@@ -10,14 +10,20 @@ SIMES includes:
 
 1. Simulator:
 
-    To run Simulator, go to simulator folder, run
+    To run Simulator, go to simulator folder, type
+    
         make
+        
     to compile simulator. This creates a library file in lib and an executable file in bin.
 
 2. Visualizer:
  
-    To run Visualizer, go to visualizer folder, run
+    To run Visualizer, go to visualizer folder, type
+
         qmake
-    first to invoke QT's qmake program to create the makefile. Then run
+        
+    first to invoke QT's qmake program to create the makefile. Then type
+    
         make
+        
     to compile visualizer. This creates an executable file in bin.
