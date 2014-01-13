@@ -7,8 +7,7 @@
 #include <vector>
 #include "Source.h"
 
-class CProfileSource:public CSourceBase
-{
+class CProfileSource:public CSourceBase {
 private:
     double _voltage;                                                // Load voltage
     vector<double> _time;                                           // Time
@@ -26,8 +25,6 @@ public:
     virtual void Reset();                                           // Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
-    virtual void CheckIntegrity() const;
+    virtual bool CheckIntegrity() const;
+    bool SetCurrentProfile(const string &s);
 };

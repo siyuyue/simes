@@ -99,6 +99,7 @@ public:
     bool SetCTIVoltageRegulator(const string &ctiName, const string &converterName);
     bool SetConverterPorts(const string &converterName, const string &portAName, const string &portBName);
     bool SetComponentProperty(const string &compName, const string &propertyName, const string &propertyValue);
+    bool SetComponentPropertyInitial(const string &compName, const string &propertyName, const string &propertyValue);
     bool IssueCommand(CCommand &command);
     bool SetSensorInterval(double interval);
     bool SetPrecisionLevel(int level);

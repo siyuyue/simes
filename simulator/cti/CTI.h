@@ -20,8 +20,7 @@ using namespace std;
 // - Inherited from CPort
 // - One CTI can have multiple ports
 // ********************************************** 
-class CCTIPort : public CPort
-{
+class CCTIPort : public CPort {
 private:
 	double *_pCTIVoltage;
 	int _CTIID;
@@ -38,8 +37,7 @@ public:
 // - Inherited from CTiming
 // - Modeled as an ideal capacitor
 // ********************************************** 
-class CCTI : public CComponent
-{
+class CCTI : public CComponent {
 private:
 	double _voltage;											// Current voltage
 	double _targetVoltage;										// Target voltage
@@ -66,9 +64,8 @@ public:
     virtual void Reset();										// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
 	virtual void TimeElapse(double time, double timeElapsed);
-    virtual void CheckIntegrity() const;
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
+    virtual bool CheckIntegrity() const;
+    bool SetVoltageRegulatorByName(const string&s);
+    bool GetVoltageRegulatorName(string&s);
 };
 

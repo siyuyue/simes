@@ -169,7 +169,7 @@ void CSimulator::Run(double timeToRun)
                 _sensorOutput << _time;
                 for( vector<CSensor *>::iterator it = _pSensors.begin(); it != _pSensors.end(); it++ )
                 {
-                    _sensorOutput << " \t" << (*it)->Value();
+                    _sensorOutput << " \t" << (*it)->GetPropertyValue();
                 }
                 _sensorOutput << endl;
                 _lastSensorTime = _time;
@@ -307,14 +307,14 @@ bool CSimulator::AddSensor(const string &target, const string &prop)
 {
     CComponent *pComponent;
     CSensor *pSensor;
-	if( (pComponent = GetComponent(target)) != NULL )
-	{
-		pSensor = new CSensor(target, prop);
-		if( pComponent->SetSensor(prop, *pSensor) )
-		{
-			_pSensors.push_back(pSensor);
-			return true;
-		}
+    CProperty *pProperty;
+	if( (pComponent = GetComponent(target)) != NULL ) {
+        pProperty = pComponent->SetSensor(prop);
+        if (pProperty != NULL) {
+            pSensor = new CSensor(target, prop, pProperty);
+            _pSensors.push_back(pSensor);
+            return true;  
+        }
 	}
 	return false;
 }
@@ -371,6 +371,16 @@ bool CSimulator::SetComponentProperty(const string &compName, const string &prop
 	return pComponent->SetProperty(propertyName, propertyValue);
 }
 
+bool CSimulator::SetComponentPropertyInitial(const string &compName, const string &propertyName, const string &propertyValue)
+{
+    CComponent *pComponent = GetComponent(compName);
+    if( pComponent == NULL )
+    {
+        return false;
+    }
+    return pComponent->SetPropertyInitial(propertyName, propertyValue);
+}
+
 bool CSimulator::IssueCommand(CCommand &command)
 {
 	Run(command.time);
@@ -416,12 +426,14 @@ double CSimulator::GetTime(void)
 
 string CSimulator::GetComponentProperty(const string &compName, const string &propertyName) const
 {
+    string value;
 	CComponent * pComponent = GetComponent(compName);
 	if( pComponent == NULL )
 	{
 		return string();
 	}
-	return pComponent->GetProperty(propertyName);
+	pComponent->GetProperty(propertyName, value);
+    return value;
 }
 
 CLoadBase*	CSimulator::GetLoad(const string &name) const

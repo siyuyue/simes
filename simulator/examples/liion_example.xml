@@ -18,7 +18,8 @@
     </comp>
     <comp type="manager" x_pos="4" y_pos="-122">
         <name>manager</name>
-        <derived type="SimpleManager" />
+        <derived type="SimpleManager">
+        </derived>
     </comp>
     <comp type="cti" x_pos="-20" y_pos="-71">
         <name>cti</name>

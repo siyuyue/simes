@@ -143,7 +143,7 @@ void CParser::Parse(const string &filename, bool parseCommands)
             TiXmlElement * pElement;
             for( pElement = pDerivedElement->FirstChildElement(); pElement != NULL; pElement = pElement->NextSiblingElement() )
             {
-                _pSimulator->SetComponentProperty( pNameElement->GetText(), pElement->Value(), pElement->GetText());
+                _pSimulator->SetComponentPropertyInitial( pNameElement->GetText(), pElement->Value(), pElement->GetText());
             }
         }
 	}

@@ -27,6 +27,6 @@ public:
     virtual void Reset();
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual void CheckIntegrity() const;
+    virtual bool CheckIntegrity() const;
+    bool SetLUT(const string &s, bool isInputCurrent);
 };

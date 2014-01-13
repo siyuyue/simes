@@ -14,6 +14,8 @@ class CGrid:public CBankBase
 {
 private:
 	double _voltage;
+    double _maxPortCurrent;
+    double _consumption;
 public:
 	CGrid(void);
 	~CGrid(void);

@@ -12,44 +12,59 @@ CComponent::~CComponent(void)
 {
 }
 
-void CComponent::SetName(const std::string &name)
-{
+void CComponent::_AddProperty(CProperty *property) {
+    if (_properties.find(property->GetKey()) != _properties.end()) {
+        // A property with the same key already exist!
+        return;
+    }
+    _properties[property->GetKey()] = property;
+}
+
+void CComponent::SetName(const std::string &name) {
 	_name = name;
 }
 
-string CComponent::GetName() const
-{
+string CComponent::GetName() const {
 	return _name;
 }
 
-CSimulator* CComponent::GetSimulator() const
-{
+CSimulator* CComponent::GetSimulator() const {
     return _pSimulator;
 }
 
-void CComponent::SetSimulator(CSimulator *pSimulator)
-{
+void CComponent::SetSimulator(CSimulator *pSimulator) {
     _pSimulator = pSimulator;
 }
 
+bool CComponent::CheckIntegrity() const {
+    return true;
+}
+
 // Property interface
-void CComponent::CheckIntegrity() const
-{
-    return;
+bool CComponent::SetProperty(const string &propertyName, const string &value) {
+    if (_properties.find(propertyName) == _properties.end()) {
+        return false;    
+    }
+	return _properties[propertyName]->Set(value);
 }
 
-bool CComponent::SetProperty(const std::string &name, const std::string &value)
-{
-	return false;
+bool CComponent::SetPropertyInitial(const string &propertyName, const string &value) {
+    if (_properties.find(propertyName) == _properties.end()) {
+        return false;    
+    }
+    return _properties[propertyName]->SetInitial(value);
 }
 
-string CComponent::GetProperty(const std::string &name) const
-{
-	return string();
+bool CComponent::GetProperty(const string &propertyName, string &value) {
+    if (_properties.find(propertyName) == _properties.end()) {
+        return false;    
+    }
+    return _properties[propertyName]->Get(value);
 }
 
-// Output interface
-bool CComponent::SetSensor(const std::string &name, CSensor &sensor)
-{
-	return false;
+CProperty* CComponent::SetSensor(const string &propertyName) {
+	if (_properties.find(propertyName) == _properties.end()) {
+        return NULL;    
+    }
+    return _properties[propertyName];
 }

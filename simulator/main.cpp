@@ -7,13 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Converter.h"
-#include "CTI.h"
-#include "Bank.h"
-#include "Load.h"
 #include "Simulator.h"
-#include "ChargeManager.h"
-#include "Source.h"
 #include "Parser.h"
 #include "config.h"
 #include "SimException.h"

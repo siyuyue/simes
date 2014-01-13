@@ -18,6 +18,7 @@ private:
 	double _stateOfCharge;											// State of charge, between 0 and 1
 	double _openCircuitVoltage;										// Open circuit voltage
 	double _internalResistance;										// Internal resistance
+    double _consumption;
 public:
 	CSimpleBattery(void);
 	virtual ~CSimpleBattery();
@@ -30,7 +31,5 @@ public:
 	virtual void Reset();											// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
 	virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string& value);
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
+    bool GetClosedCircuitVoltage(string& s);
 };

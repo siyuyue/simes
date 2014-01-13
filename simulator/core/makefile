@@ -2,7 +2,7 @@
 # University of Southern California
 
 INCLUDE_PATH=../core ../banks ../converters ../sources ../loads ../cti ../managers ../parser $(BOOST_ROOT)
-CLASSES=Component Port LookUpTable Sensor SimException Simulator
+CLASSES=Component Port Property LookUpTable Sensor SimException Simulator
 
 CC=g++
 CFLAGS=-O2 -c $(addprefix -I, $(INCLUDE_PATH))

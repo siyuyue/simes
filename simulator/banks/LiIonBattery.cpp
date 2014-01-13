@@ -3,13 +3,15 @@
 // University of Southern California
 // **********************************************
 #include <cmath>
+#include <boost/bind.hpp>
+#include <boost/lambda/lambda.hpp>
 #include "LiIonBattery.h"
 #include "SimException.h"
 
 CLiIonBattery::CLiIonBattery(void)
 {
 	_stateOfCharge = 1;
-	_capacity = 2.6;
+	_capacity = 2.6;		// Capacity of each cell in Ah
 	_mBank = 1;
 	_nBank = 1;
 	// Li-ion Battery parameters
@@ -19,6 +21,29 @@ CLiIonBattery::CLiIonBattery(void)
 	_b11 = -0.67;   _b12 = -16.21;  _b13 = -0.03;
 	_b14 = 1.28;    _b15 =  -0.40;  _b16 = 7.55;
 	_b21 = 0.05;    _b22 = -4.32;   _b23 = 0.17;
+
+	// Add properties.
+	_AddProperty(new CProperty("capacity", "Capacity of a cell in Ah.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_capacity)),
+		boost::bind(CheckSetter<double>, _1, boost::ref(_capacity), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("m_bank", "Number of banks in parallel.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<int>, _1, boost::ref(_mBank)),
+		boost::bind(CheckSetter<int>, _1, boost::ref(_mBank), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("n_bank", "Number of banks in series.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<int>, _1, boost::ref(_nBank)),
+		boost::bind(CheckSetter<int>, _1, boost::ref(_nBank), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("state_of_charge", "State-of-charge.",
+		boost::bind(CheckSetter<double>, _1, boost::ref(_stateOfCharge), (boost::lambda::_1 >= 0 && boost::lambda::_1 <= 1)),
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_stateOfCharge))));
+	_AddProperty(new CProperty("closed_circuit_voltage", "Closed circuit voltage.",
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_ccv))));
+	_AddProperty(new CProperty("consumption", "Total energy drawn from the storage bank.",
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_consumption))));
+	_AddProperty(new CProperty("current", "Port Current.",
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_portCurrent))));
 }
 
 CLiIonBattery::~CLiIonBattery(void)
@@ -103,67 +128,4 @@ double CLiIonBattery::NextTimeStep(double time, int precision) const
 		current_eff = current/_mBank;
 	double step = difference * _capacity * 3600 / abs(current_eff);
 	return step;
-}
-
-bool CLiIonBattery::SetProperty(const string &name, const string& value)
-{
-	if( name == string("capacity") )
-	{
-		_capacity = FromString<double>(value);
-		return true;
-	}
-	if( name == string("m_bank") )
-	{
-		_mBank = FromString<int>(value);
-		return true;
-	}
-	if( name == string("n_bank") )
-	{
-		_nBank = FromString<int>(value);
-		return true;
-	}
-	if( name == string("state_of_charge") )
-	{
-		_stateOfCharge = FromString<double>(value);
-        return true;
-	}
-	return false;
-}
-
-string CLiIonBattery::GetProperty(const string &name) const
-{
-	if( name == string("state_of_charge") )
-	{
-		return ToString<double>(_stateOfCharge);
-	}
-	if( name == string("consumption") )
-	{
-		return ToString<double>(_consumption);
-	}
-	return string();
-}
-
-bool CLiIonBattery::SetSensor(const string &name, CSensor &sensor)
-{
-	if( name == string("state_of_charge") )
-	{
-		sensor.SetPointer(&_stateOfCharge);
-		return true;
-	}
-	if( name == string("closed_circuit_voltage") )
-	{
-		sensor.SetPointer(&_ccv);
-		return true;
-	}
-    if( name == string("current") )
-    {
-        sensor.SetPointer(&_portCurrent);
-        return true;
-    }
-	if( name == string("consumption") )
-	{
-		sensor.SetPointer(&_consumption);
-		return true;
-	}
-	return false;
 }

@@ -3,6 +3,8 @@
 // University of Southern California
 // **********************************************
 #include <cmath>
+#include <boost/bind.hpp>
+#include <boost/lambda/lambda.hpp>
 #include "Converter.h"
 #include "SimpleConverter.h"
 #include "DCDCConverter.h"
@@ -20,6 +22,12 @@ CConverterBase::CConverterBase(void)
 	_outputCurrent = 0;
 	_inputCurrent = 0;
 	_maxIter = 10000;
+
+	// Add properties
+	_AddProperty(new CProperty("input_current", "Input current.",
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_inputCurrent))));
+	_AddProperty(new CProperty("output_current", "Output current.",
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_outputCurrent))));
 }
 
 CConverterBase::~CConverterBase(void)
@@ -211,34 +219,6 @@ double CConverterBase::GetMaxInputPowerCurrent(double time, bool isPortA) const
 		}
 	}
 	return xl;
-}
-
-string CConverterBase::GetProperty(const string &name) const
-{
-    if( name == string("input_current") )
-    {
-        return ToString<double>(_inputCurrent);
-    }
-    else if( name == string("output_current") )
-    {
-        return ToString<double>(_outputCurrent);
-    }
-    return string();
-}
-
-bool CConverterBase::SetSensor(const string &name, CSensor &sensor)
-{
-    if( name == string("input_current") )
-    {
-        sensor.SetPointer(&_inputCurrent);
-        return true;
-    }
-    else if( name == string("output_current") )
-    {
-        sensor.SetPointer(&_outputCurrent);
-        return true;
-    }
-    return false;
 }
 
 CConverterBase* CConverterBase::Create(const string &derivedType)
