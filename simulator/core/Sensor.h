@@ -9,7 +9,7 @@
 
 #include <string>
 #include <iostream>
-#include "Property.h"
+#include "core/Property.h"
 
 using namespace std;
 

@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Bank.h"
+#include "core/config.h"
+#include "banks/Bank.h"
 
-class CLiIonBattery:public CBankBase
-{
+class CLiIonBattery:public CBankBase {
 private:
 	double _capacity;												// The nominal energy capacity of the battery in Ah
 	double _stateOfCharge;

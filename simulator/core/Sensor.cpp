@@ -2,7 +2,7 @@
 // Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 // University of Southern California
 // **********************************************
-#include "Sensor.h"
+#include "core/Sensor.h"
 
 CSensor::CSensor(const string &target, const string &propertyName, CProperty *property) : _target(target), _propertyName(propertyName) {
 	_property = property;

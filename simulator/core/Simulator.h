@@ -4,15 +4,15 @@
 // **********************************************
 #pragma once
 
-#include "Bank.h"
-#include "ChargeManager.h"
-#include "Converter.h"
-#include "CTI.h"
-#include "Load.h"
-#include "Port.h"
-#include "Source.h"
-#include "config.h"
-#include "Sensor.h"
+#include "banks/Bank.h"
+#include "converters/Converter.h"
+#include "core/Port.h"
+#include "core/config.h"
+#include "core/Sensor.h"
+#include "cti/CTI.h"
+#include "loads/Load.h"
+#include "managers/ChargeManager.h"
+#include "sources/Source.h"
 #include <map>
 #include <set>
 #include <string>
@@ -27,10 +27,9 @@ using namespace std;
 // CCommand
 // - Command to CSimulator
 // **********************************************
-class CCommand
-{
+class CCommand {
 public:
-    enum {SET, GET, SIMULATE, FINISH, INVALID}type;
+    enum {SET, GET, SIMULATE, FINISH, INVALID} type;
 	double time;
 	string targetName;
 	string propertyName;
@@ -47,8 +46,7 @@ bool operator < (const CCommand &c1, const CCommand &c2);
 // CSimulator class:
 // - Main class for simulation
 // **********************************************
-class CSimulator
-{
+class CSimulator {
 private:
     static bool _initialized;
 	string _projectName;

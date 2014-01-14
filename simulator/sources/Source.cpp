@@ -3,24 +3,21 @@
 // University of Southern California
 // **********************************************
 #include <string>
-#include "Source.h"
-#include "IdealVoltageSource.h"
-#include "ProfileSource.h"
+#include "sources/Source.h"
+#include "sources/IdealVoltageSource.h"
+#include "sources/ProfileSource.h"
 
 using namespace std;
 
 map<string, boost::function<CSourceBase*()> > CSourceBase::factories;
 
-CSourceBase::CSourceBase(void) : CPort(false, true, SOURCE)
-{
+CSourceBase::CSourceBase(void) : CPort(false, true, SOURCE) {
 }
 
-CSourceBase::~CSourceBase(void)
-{
+CSourceBase::~CSourceBase(void) {
 }
 
-CSourceBase* CSourceBase::Create(const string &derivedType)
-{
+CSourceBase* CSourceBase::Create(const string &derivedType) {
     if (factories.find(derivedType) == factories.end()) {
         return NULL;
     }

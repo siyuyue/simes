@@ -4,9 +4,9 @@
 // **********************************************
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "LUTConverter.h"
-#include "Simulator.h"
-#include "SimException.h"
+#include "converters/LUTConverter.h"
+#include "core/Simulator.h"
+#include "core/SimException.h"
 
 CLUTConverter::CLUTConverter(void) {
     _pLUT = NULL;
@@ -26,22 +26,21 @@ CLUTConverter::~CLUTConverter() {
 }
 
 double CLUTConverter::FindOutputCurrent(double time, bool isOutputPortA, double inputVoltage, double outputVoltage, double inputCurrent) const {
-    if( _isInputCurrent ) {
+    if (_isInputCurrent) {
         return inputVoltage*inputCurrent*_pLUT->LookUp(inputVoltage, outputVoltage, inputCurrent )/outputVoltage;
-    }
-    else {
+    } else {
         // Binary search
         double xl = 0;
         double xr = 10000;
         double fl = FindInputCurrent(time, !isOutputPortA, inputVoltage, outputVoltage, xl) - inputCurrent;
         double fr = FindInputCurrent(time, !isOutputPortA, inputVoltage, outputVoltage, xr) - inputCurrent;
-        if( (fl > 0 && fr > 0) || (fl < 0 && fr < 0)) {
+        if ((fl > 0 && fr > 0) || (fl < 0 && fr < 0)) {
             throw CSimException(GetName().c_str(), "Binary Search Failed.");
         }
-        while( xr - xl > EPS ) {
+        while (xr - xl > EPS) {
             double xm = (xr + xl ) / 2;
             double fm = FindInputCurrent(time, !isOutputPortA, inputVoltage, outputVoltage, xm) - inputCurrent;
-            if( (fl > 0 && fm > 0) || (fl < 0 && fm < 0) ) {
+            if ((fl > 0 && fm > 0) || (fl < 0 && fm < 0)) {
                 xl = xm;
                 fl = fm;
             } else {
@@ -54,19 +53,19 @@ double CLUTConverter::FindOutputCurrent(double time, bool isOutputPortA, double 
 }
 
 double CLUTConverter::FindInputCurrent(double time, bool isInputPortA, double inputVoltage, double outputVoltage, double outputCurrent) const {
-    if( _isInputCurrent ) {
+    if (_isInputCurrent) {
         // Binary search
         double xl = 0;
         double xr = 10000;
         double fl = FindOutputCurrent(time, !isInputPortA, inputVoltage, outputVoltage, xl) - outputCurrent;
         double fr = FindOutputCurrent(time, !isInputPortA, inputVoltage, outputVoltage, xr) - outputCurrent;
-        if( (fl > 0 && fr > 0) || (fl < 0 && fr < 0)) {
+        if ((fl > 0 && fr > 0) || (fl < 0 && fr < 0)) {
             throw CSimException(GetName().c_str(),"Binary Search Failed.");
         }
-        while( xr - xl > EPS ) {
+        while (xr - xl > EPS) {
             double xm = (xr + xl ) / 2;
             double fm = FindOutputCurrent(time, !isInputPortA, inputVoltage, outputVoltage, xm) - outputCurrent;
-            if( (fl > 0 && fm > 0) || (fl < 0 && fm < 0) ) {
+            if ((fl > 0 && fm > 0) || (fl < 0 && fm < 0)) {
                 xl = xm;
                 fl = fm;
             } else {
@@ -90,9 +89,8 @@ double CLUTConverter::NextTimeStep(double time, int precision) const {
 void CLUTConverter::TimeElapse(double time, double timeElapsed) {
 }
 
-bool CLUTConverter::CheckIntegrity() const
-{
-    if( _pLUT == NULL ) {
+bool CLUTConverter::CheckIntegrity() const {
+    if (_pLUT == NULL) {
         throw CSimException(GetName().c_str(), "Converter lookup table is not set.");
     }
     return true;
@@ -101,7 +99,7 @@ bool CLUTConverter::CheckIntegrity() const
 bool CLUTConverter::SetLUT(const string &s, bool isInputCurrent) {
     _isInputCurrent = isInputCurrent;
     ifstream inputFile(string(GetSimulator()->GetPathPrefix() + s).c_str());
-    if(!inputFile) {
+    if (!inputFile) {
         return false;
     }
     _pLUT = new CLookUpTable(3, inputFile, false);

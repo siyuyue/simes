@@ -4,9 +4,9 @@
 // **********************************************
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "ProfileManager.h"
-#include "Simulator.h"
-#include "SimException.h"
+#include "core/Simulator.h"
+#include "core/SimException.h"
+#include "managers/ProfileManager.h"
 
 CProfileManager::CProfileManager(void) {
 	_bankNumber = 0;
@@ -19,10 +19,12 @@ CProfileManager::CProfileManager(void) {
 }
 
 CProfileManager::~CProfileManager(void) {
-    for( map<string, vector<double>*>::iterator it = _bankCurrents.begin(); it != _bankCurrents.end(); it++ )
+    for (map<string, vector<double>*>::iterator it = _bankCurrents.begin(); it != _bankCurrents.end(); it++) {
         delete it->second;
-    for( map<string, vector<double>*>::iterator it = _ctiVoltages.begin(); it != _ctiVoltages.end(); it++ )
+    }
+    for (map<string, vector<double>*>::iterator it = _ctiVoltages.begin(); it != _ctiVoltages.end(); it++) {
         delete it->second;
+    }
 }
 
 bool CProfileManager::IsDecisionEpoch(double time) const {
@@ -30,23 +32,25 @@ bool CProfileManager::IsDecisionEpoch(double time) const {
 }
 
 void CProfileManager::Decision(double time, vector<CLoadBase*> pLoads, vector<CBankBase*> pBanks, vector<CSourceBase*> pSources, vector<CConverterBase*> pConverters, vector<CCTI*> pCTIs) {
-	for(vector<CBankBase*>::iterator it = pBanks.begin(); it != pBanks.end(); it++ ) {
-        if( _bankCurrents.find((*it)->GetName()) == _bankCurrents.end() )
+	for (vector<CBankBase*>::iterator it = pBanks.begin(); it != pBanks.end(); it++) {
+        if (_bankCurrents.find((*it)->GetName()) == _bankCurrents.end()) {
             continue;
+        }
         vector<double> *pBankCurrents = _bankCurrents[(*it)->GetName()];
-        if( ((*pBankCurrents)[_idx] > 0 && (*it)->GetStateofCharge() > 0.99) || ((*pBankCurrents)[_idx] < 0 && (*it)->GetStateofCharge() < 0.01) ) {
+        if (((*pBankCurrents)[_idx] > 0 && (*it)->GetStateofCharge() > 0.99) || ((*pBankCurrents)[_idx] < 0 && (*it)->GetStateofCharge() < 0.01)) {
             (*it)->GetConverter()->SetPortOutputCurrent(time, (*it)->IsPortA(), 0 );
         } else {
-            if((*pBankCurrents)[_idx] > 0) {
+            if ((*pBankCurrents)[_idx] > 0) {
                 (*it)->GetConverter()->SetPortOutputCurrent(time, (*it)->IsPortA(), (*pBankCurrents)[_idx] );
             } else {
                 (*it)->GetConverter()->SetPortInputCurrent(time, (*it)->IsPortA(), -(*pBankCurrents)[_idx] );
             }
         }
 	}
-	for(vector<CCTI*>::iterator it = pCTIs.begin(); it != pCTIs.end(); it++ ) {
-		if( _ctiVoltages.find((*it)->GetName()) == _ctiVoltages.end() )
+	for (vector<CCTI*>::iterator it = pCTIs.begin(); it != pCTIs.end(); it++) {
+		if (_ctiVoltages.find((*it)->GetName()) == _ctiVoltages.end()) {
             continue;
+        }
         vector<double> *pCTIVoltages = _ctiVoltages[(*it)->GetName()];
         (*it)->SetTargetVoltage((*pCTIVoltages)[_idx]);
 	}
@@ -57,20 +61,20 @@ void CProfileManager::Reset() {
 }
 
 double CProfileManager::NextTimeStep(double time, int precision) const {
-	if( _idx+1 != _time.size() ) {
+	if (_idx+1 != _time.size()) {
 		return _time[_idx + 1] - time;
 	}
 	return INF;
 }
 
 void CProfileManager::TimeElapse(double time, double timeElapsed) {
-	while( _idx+1 != _time.size() && time + timeElapsed >= _time[_idx + 1] ) {
+	while (_idx+1 != _time.size() && time + timeElapsed >= _time[_idx + 1]) {
 		_idx ++;
 	}
 }
 
 bool CProfileManager::CheckIntegrity() const {
-    if(_time.empty()) {
+    if (_time.empty()) {
         throw CSimException(GetName().c_str(), "Input profile is not set.");
     }
     return true;
@@ -78,14 +82,16 @@ bool CProfileManager::CheckIntegrity() const {
 
 bool CProfileManager::SetProfile(const string &s) {
     ifstream inputProfile(string(GetSimulator()->GetPathPrefix() + s).c_str());
-    if(!inputProfile) {
+    if (!inputProfile) {
         return false;
     }
     _time.clear();
-    for( map<string, vector<double>*>::iterator it = _bankCurrents.begin(); it != _bankCurrents.end(); it++ )
+    for (map<string, vector<double>*>::iterator it = _bankCurrents.begin(); it != _bankCurrents.end(); it++) {
         delete it->second;
-    for( map<string, vector<double>*>::iterator it = _ctiVoltages.begin(); it != _ctiVoltages.end(); it++ )
+    }
+    for (map<string, vector<double>*>::iterator it = _ctiVoltages.begin(); it != _ctiVoltages.end(); it++) {
         delete it->second;
+    }
     _bankCurrents.clear();
     _ctiVoltages.clear();
 
@@ -93,13 +99,13 @@ bool CProfileManager::SetProfile(const string &s) {
     string name;
 
     inputProfile >> number;
-    if( number <= 0 ) {
+    if (number <= 0) {
         return false;
     }       
     _ctiNumber = number;
 
     inputProfile >> number;
-    if( number <= 0 ) {
+    if (number <= 0) {
         return false;
     }
     _bankNumber = number;
@@ -108,13 +114,13 @@ bool CProfileManager::SetProfile(const string &s) {
     std::vector<string> bankNames;
     std::vector<string> ctiNames;
 
-    for (int i=0;i<_ctiNumber;i++) {
+    for (int i=0; i<_ctiNumber; i++) {
         inputProfile >> name;
         ctiNames.push_back(name);
         _ctiVoltages[name] = new vector<double>();
     }
 
-    for (int i=0;i<_bankNumber;i++) {
+    for (int i=0; i<_bankNumber; i++) {
         inputProfile >> name;
         bankNames.push_back(name);
         _bankCurrents[name] = new vector<double>();
@@ -124,11 +130,11 @@ bool CProfileManager::SetProfile(const string &s) {
         double time, voltage, current;
         inputProfile >> time;
         _time.push_back(time);
-        for (int i=0;i<_ctiNumber;i++) {
+        for (int i=0; i<_ctiNumber; i++) {
             inputProfile >> voltage;
             _ctiVoltages[ctiNames[i]]->push_back(voltage);
         }
-        for (int i=0;i<_bankNumber;i++) {
+        for (int i=0; i<_bankNumber; i++) {
             inputProfile >> current;
             _bankCurrents[bankNames[i]]->push_back(current);
         }

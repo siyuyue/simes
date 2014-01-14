@@ -6,12 +6,12 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Port.h"
-#include "Component.h"
-#include "Converter.h"
 #include <vector>
 #include <cmath>
+#include "core/config.h"
+#include "core/Component.h"
+#include "core/Port.h"
+#include "converters/Converter.h"
 
 using namespace std;
 

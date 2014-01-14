@@ -3,13 +3,12 @@
 // University of Southern California
 // **********************************************
 #include <string>
-
-#include "Bank.h"
-#include "SimpleBattery.h"
-#include "LiIonBattery.h"
-#include "LeadAcidBattery.h"
-#include "SuperCap.h"
-#include "Grid.h"
+#include "banks/Bank.h"
+#include "banks/SimpleBattery.h"
+#include "banks/LiIonBattery.h"
+#include "banks/LeadAcidBattery.h"
+#include "banks/SuperCap.h"
+#include "banks/Grid.h"
 
 using namespace std;
 

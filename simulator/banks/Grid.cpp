@@ -2,7 +2,7 @@
 // Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 // University of Southern California
 // **********************************************
-#include "Grid.h"
+#include "banks/Grid.h"
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -22,7 +22,6 @@ CGrid::CGrid(void) {
 }
 
 CGrid::~CGrid(void) {
-
 }
 
 double CGrid::GetStateofCharge() const {

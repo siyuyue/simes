@@ -4,10 +4,9 @@
 // **********************************************
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "ConstantLoad.h"
+#include "loads/ConstantLoad.h"
 
-CConstantLoad::CConstantLoad(void)
-{
+CConstantLoad::CConstantLoad(void) {
 	_voltage = 1;
 	_current = 1;
 
@@ -24,41 +23,33 @@ CConstantLoad::CConstantLoad(void)
 		boost::bind(SimpleGetter<double>, _1, boost::ref(_consumption))));
 }
 
-CConstantLoad::~CConstantLoad()
-{
+CConstantLoad::~CConstantLoad() {
 }
 
-void CConstantLoad::Reset()
-{
+void CConstantLoad::Reset() {
 	_consumption = 0;
 }
 
-double CConstantLoad::PortDefaultCurrent(double time) const
-{
+double CConstantLoad::PortDefaultCurrent(double time) const {
 	return _current;
 }
 
-double CConstantLoad::PortVoltage(double time, double current) const
-{
+double CConstantLoad::PortVoltage(double time, double current) const {
 	return _voltage;
 }
 
-double CConstantLoad::MaxOutPortCurrent(double time) const
-{
+double CConstantLoad::MaxOutPortCurrent(double time) const {
 	return 0;
 }
 
-double CConstantLoad::NextTimeStep(double time, int precision) const
-{
+double CConstantLoad::NextTimeStep(double time, int precision) const {
 	return INF;
 }
 
-void CConstantLoad::TimeElapse(double time, double timeElapsed)
-{
+void CConstantLoad::TimeElapse(double time, double timeElapsed) {
 	_consumption += timeElapsed * _voltage * _portCurrent;
 }
 
-double CConstantLoad::GetConsumption() const
-{
+double CConstantLoad::GetConsumption() const {
 	return _consumption;
 }

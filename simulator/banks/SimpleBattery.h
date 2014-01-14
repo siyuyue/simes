@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Bank.h"
+#include "core/config.h"
+#include "banks/Bank.h"
 
-class CSimpleBattery:public CBankBase
-{
+class CSimpleBattery:public CBankBase {
 private:
 	double _capacity;												// Capacity of the bank in Ah
 	double _stateOfCharge;											// State of charge, between 0 and 1

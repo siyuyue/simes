@@ -2,7 +2,7 @@
 // Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 // University of Southern California
 // **********************************************
-#include "Property.h"
+#include "core/Property.h"
 
 CProperty::CProperty(string key, string description, GetFunction getter)
     : _key(key), _description(description), _setter(InvalidSetter), _getter(getter), _initialSetter(InvalidSetter) {

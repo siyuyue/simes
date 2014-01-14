@@ -13,15 +13,13 @@
 #include <boost/functional/factory.hpp>
 #include <string>
 #include <map>
-
-#include "config.h"
-#include "Component.h"
-#include "Port.h"
+#include "core/config.h"
+#include "core/Component.h"
+#include "core/Port.h"
 
 using namespace std;
 
-class CConverterBase : public CComponent
-{
+class CConverterBase : public CComponent {
 private:
     static map<string, boost::function<CConverterBase*()> > factories;
 protected:

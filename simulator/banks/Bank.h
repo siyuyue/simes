@@ -13,15 +13,13 @@
 #include <boost/functional/factory.hpp>
 #include <string>
 #include <map>
-
-#include "config.h"
-#include "Port.h"
-#include "Component.h"
+#include "core/config.h"
+#include "core/Component.h"
+#include "core/Port.h"
 
 using namespace std;
 
-class CBankBase : public CPort, public CComponent
-{
+class CBankBase : public CPort, public CComponent {
 private:
     static map<string, boost::function<CBankBase*()> > factories;
 public:

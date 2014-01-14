@@ -11,17 +11,14 @@
 #include <map>
 #include <string>
 #include <sstream>
-
-#include "config.h"
-#include "Property.h"
-#include "Sensor.h"
+#include "core/config.h"
+#include "core/Property.h"
 
 using namespace std;
 
 class CSimulator;
 
-class CComponent
-{
+class CComponent {
 private:
     string _name;                                                       // Unique identifier
     CSimulator *_pSimulator;                                            // Reference to the parent Simulator class

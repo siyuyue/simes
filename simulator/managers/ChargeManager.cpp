@@ -3,10 +3,10 @@
 // University of Southern California
 // **********************************************
 #include <string>
-#include "ChargeManager.h"
-#include "SimpleManager.h"
-#include "ProfileManager.h"
-#include "PulseManager.h"
+#include "managers/ChargeManager.h"
+#include "managers/SimpleManager.h"
+#include "managers/ProfileManager.h"
+#include "managers/PulseManager.h"
 
 using namespace std;
 

@@ -6,7 +6,7 @@
 // - Inherited from ChargeManagerBase
 // - Does nothing
 // **********************************************
-#include "ChargeManager.h"
+#include "managers/ChargeManager.h"
 
 class CSimpleManager : public CChargeManagerBase {
 private:

@@ -5,7 +5,7 @@
 #pragma once
 
 #include <vector>
-#include "Source.h"
+#include "sources/Source.h"
 
 class CProfileSource:public CSourceBase {
 private:

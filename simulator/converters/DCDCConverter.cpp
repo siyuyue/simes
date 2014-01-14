@@ -4,8 +4,8 @@
 // **********************************************
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "DCDCConverter.h"
-#include "SimException.h"
+#include "converters/DCDCConverter.h"
+#include "core/SimException.h"
 
 CDCDCConverter::CDCDCConverter(void) {
 	_scale = 1;
@@ -50,10 +50,10 @@ double CDCDCConverter::FindOutputCurrent(double time, bool isOutputPortA, double
 	double xr = 10000;
 	double fl = FindInputCurrent(time, !isOutputPortA, inputVoltage, outputVoltage, xl) - inputCurrent;
 	double fr = FindInputCurrent(time, !isOutputPortA, inputVoltage, outputVoltage, xr) - inputCurrent;
-	if( (fl > 0 && fr > 0) || (fl < 0 && fr < 0)) {
+	if ((fl > 0 && fr > 0) || (fl < 0 && fr < 0)) {
         throw CSimException(GetName().c_str(),"Binary Search Failed.");
 	}
-	while( xr - xl > EPS ) {
+	while (xr - xl > EPS) {
 		double xm = (xr + xl ) / 2;
 		double fm = FindInputCurrent(time, !isOutputPortA, inputVoltage, outputVoltage, xm) - inputCurrent;
 		if( (fl > 0 && fm > 0) || (fl < 0 && fm < 0) ) {
@@ -68,10 +68,10 @@ double CDCDCConverter::FindOutputCurrent(double time, bool isOutputPortA, double
 }
 
 double CDCDCConverter::FindInputCurrent(double time, bool isInputPortA, double inputVoltage, double outputVoltage, double outputCurrent) const {
-	if( outputCurrent < EPS ) {
+	if (outputCurrent < EPS) {
 		return 0;
 	}
-	if( outputVoltage <= inputVoltage ) {
+	if (outputVoltage <= inputVoltage) {
 		// Buck
 		double k = outputVoltage / inputVoltage;
 		double dI = outputVoltage * (inputVoltage - outputVoltage) / ( _F_s * _L_f * inputVoltage );
@@ -83,8 +83,7 @@ double CDCDCConverter::FindInputCurrent(double time, bool isInputPortA, double i
 		double P_tot_buck = _vari_buck * P_conduction + _fixed * (P_switching + P_controller);
 
 		return (outputCurrent*outputVoltage + P_tot_buck) / inputVoltage;
-	}
-	else {
+	} else {
 		// Boost
 		double k = 1 - inputVoltage/outputVoltage;
 		double dI = inputVoltage * (outputVoltage-inputVoltage) / (_F_s * _L_f * outputVoltage);
@@ -112,7 +111,7 @@ void CDCDCConverter::TimeElapse(double time, double timeElapsed) {
 
 bool CDCDCConverter::SetScaleParameter(const string& s) {
 	double scaleTemp = FromString<double>(s);
-	if ( scaleTemp <= 0 ) {
+	if (scaleTemp <= 0) {
 		return false;
 	}
 	_scale = scaleTemp;

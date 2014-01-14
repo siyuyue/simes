@@ -4,7 +4,7 @@
 // **********************************************
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "IdealVoltageSource.h"
+#include "sources/IdealVoltageSource.h"
 
 CIdealVoltageSource::CIdealVoltageSource(void) {
 	_voltage = 5;

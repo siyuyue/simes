@@ -5,8 +5,8 @@
 #include <cmath>
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "SimpleBattery.h"
-#include "SimException.h"
+#include "banks/SimpleBattery.h"
+#include "core/SimException.h"
 
 CSimpleBattery::CSimpleBattery(void) {
     // Default values, use SetProperty interface to modify them
@@ -56,7 +56,7 @@ double CSimpleBattery::GetOpenCircuitVoltage() const {
 
 double CSimpleBattery::Charge(double duration, double current) {
 	double chargeChange = current*duration;
-	_stateOfCharge += chargeChange / (3600*_capacity);
+	_stateOfCharge += chargeChange / (3600 * _capacity);
 	if( _stateOfCharge > 1 ) {
 		throw CSimException(GetName().c_str(), "State of charge goes above capacity limit.");
 	}
@@ -65,7 +65,7 @@ double CSimpleBattery::Charge(double duration, double current) {
 
 double CSimpleBattery::Discharge(double duration, double current) {
 	double chargeChange = current*duration;
-	_stateOfCharge -= chargeChange / (3600*_capacity);
+	_stateOfCharge -= chargeChange / (3600 * _capacity);
 	if( _stateOfCharge <= 0 ) {
 		throw CSimException(GetName().c_str(), "State of charge goes below zero.");
 	}
@@ -73,12 +73,13 @@ double CSimpleBattery::Discharge(double duration, double current) {
 }
 
 double CSimpleBattery::NextTimeStep(double time, int precision) const {
-	if(abs(_portCurrent) <= EPS)
+	if(abs(_portCurrent) <= EPS) {
 		return INF;
-	else if(_portCurrent < 0)
+	} else if(_portCurrent < 0) {
 		return _stateOfCharge*3600*_capacity/(-_portCurrent);
-	else
+	} else {
 		return (1-_stateOfCharge)*3600*_capacity/(_portCurrent);
+	}
 }
 
 double CSimpleBattery::PortVoltage(double time, double current) const {

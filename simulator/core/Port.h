@@ -8,18 +8,17 @@
 // Ports are connected by converters.
 // **********************************************
 #pragma once
-#include "config.h"
+
+#include "core/config.h"
 
 class CConverterBase;
 
-enum PortType
-{
+enum PortType {
 	LOAD, SOURCE, BANK, CTI
 };
 
 
-class CPort
-{
+class CPort {
 protected:
 	PortType _type;
 	bool _inPortMode;

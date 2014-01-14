@@ -2,14 +2,12 @@
 // Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 // University of Southern California
 // **********************************************
-#include "Component.h"
+#include "core/Component.h"
 
-CComponent::CComponent(void) : _name("unnamed"), _pSimulator(NULL)
-{
+CComponent::CComponent(void) : _name("unnamed"), _pSimulator(NULL) {
 }
 
-CComponent::~CComponent(void)
-{
+CComponent::~CComponent(void) {
 }
 
 void CComponent::_AddProperty(CProperty *property) {

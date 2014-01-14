@@ -5,18 +5,17 @@
 #include <cmath>
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "Converter.h"
-#include "SimpleConverter.h"
-#include "DCDCConverter.h"
-#include "LUTConverter.h"
-#include "SimException.h"
+#include "core/SimException.h"
+#include "converters/Converter.h"
+#include "converters/SimpleConverter.h"
+#include "converters/DCDCConverter.h"
+#include "converters/LUTConverter.h"
 
 using namespace std;
 
 map<string, boost::function<CConverterBase*()> > CConverterBase::factories;
 
-CConverterBase::CConverterBase(void)
-{
+CConverterBase::CConverterBase(void) {
 	_pPortA = NULL;
 	_pPortB = NULL;
 	_outputCurrent = 0;
@@ -30,49 +29,36 @@ CConverterBase::CConverterBase(void)
 		boost::bind(SimpleGetter<double>, _1, boost::ref(_outputCurrent))));
 }
 
-CConverterBase::~CConverterBase(void)
-{
+CConverterBase::~CConverterBase(void) {
 }
 
-void CConverterBase::SetPortA(CPort *pPort)
-{
+void CConverterBase::SetPortA(CPort *pPort) {
 	_pPortA = pPort;
 	_pPortA->SetConverter(this, true);
 }
 
-void CConverterBase::SetPortB(CPort *pPort)
-{
+void CConverterBase::SetPortB(CPort *pPort) {
 	_pPortB = pPort;
 	_pPortB->SetConverter(this, false);
 }
 
-bool CConverterBase::CanPortBeOutput(bool isPortA) const
-{
-	if( isPortA )
-	{
+bool CConverterBase::CanPortBeOutput(bool isPortA) const {
+	if (isPortA) {
 		return _pPortA->IsInPort() && _pPortB->IsOutPort();
-	}
-	else
-	{
+	} else {
 		return _pPortB->IsInPort() && _pPortA->IsOutPort();
 	}
 }
 
-void CConverterBase::SetPortOutputCurrent(double time, bool isPortA, double current)
-{
-	if( isPortA )
-	{
-		if( !_pPortA->IsInPort() || !_pPortB->IsOutPort() )
-		{
+void CConverterBase::SetPortOutputCurrent(double time, bool isPortA, double current) {
+	if (isPortA) {
+		if (!_pPortA->IsInPort() || !_pPortB->IsOutPort()) {
 			// Error here, port A cannot be output.
             throw CSimException(GetName().c_str(),"Port A cannot be output!");
 		}
 		_isPortAOutput = true;
-	}
-	else
-	{
-		if( !_pPortB->IsInPort() || !_pPortA->IsOutPort() )
-		{
+	} else {
+		if (!_pPortB->IsInPort() || !_pPortA->IsOutPort()) {
 			// Error here, port B cannot be output.
             throw CSimException(GetName().c_str(),"Port B cannot be output!");
 		}
@@ -82,21 +68,15 @@ void CConverterBase::SetPortOutputCurrent(double time, bool isPortA, double curr
 	_isOutputSet = true;
 }
 
-void CConverterBase::SetPortInputCurrent(double time, bool isPortA, double current)
-{
-	if( isPortA )
-	{
-		if( !_pPortB->IsInPort() || !_pPortA->IsOutPort() )
-		{
+void CConverterBase::SetPortInputCurrent(double time, bool isPortA, double current) {
+	if (isPortA) {
+		if (!_pPortB->IsInPort() || !_pPortA->IsOutPort()) {
 			// Error here, port A cannot be input.
             throw CSimException(GetName().c_str(),"Port A cannot be input!");
 		}
 		_isPortAOutput = false;
-	}
-	else
-	{
-		if( !_pPortA->IsInPort() || !_pPortB->IsOutPort() )
-		{
+	} else {
+		if (!_pPortA->IsInPort() || !_pPortB->IsOutPort()) {
 			// Error here, port B cannot be input.
             throw CSimException(GetName().c_str(),"Port B cannot be input!");
 		}
@@ -106,21 +86,16 @@ void CConverterBase::SetPortInputCurrent(double time, bool isPortA, double curre
 	_isOutputSet = false;
 }
 
-void CConverterBase::Solve(double time)
-{
-	if( _isOutputSet )
-	{
+void CConverterBase::Solve(double time) {
+	if( _isOutputSet ) {
 		double outputVoltage;
 		CPort * pInputPort;
 		CPort * pOutputPort;
-		if(_isPortAOutput)
-		{
+		if(_isPortAOutput) {
 			outputVoltage = _pPortA->PortVoltage(time, _outputCurrent);
 			pOutputPort = _pPortA;
 			pInputPort = _pPortB;
-		}
-		else
-		{
+		} else {
 			outputVoltage = _pPortB->PortVoltage(time, _outputCurrent);
 			pOutputPort = _pPortB;
 			pInputPort = _pPortA;
@@ -128,32 +103,25 @@ void CConverterBase::Solve(double time)
 		// Solve by iteration
 		int count = 0;
         double inputCurrentPre = _inputCurrent + 100;
-		while( count < _maxIter && abs(_inputCurrent - inputCurrentPre) > EPS )
-		{
+		while(count < _maxIter && abs(_inputCurrent - inputCurrentPre) > EPS) {
 			inputCurrentPre = _inputCurrent;
 			_inputCurrent = FindInputCurrent(time, !_isPortAOutput, pInputPort->PortVoltage(time, -_inputCurrent), outputVoltage, _outputCurrent);
 			count ++;
 		}
-		if( count == _maxIter)
-		{
+		if (count == _maxIter) {
             throw CSimException(GetName().c_str(),"Max number of iterations exceeded!");
 		}
 		pInputPort->SetPortCurrent(-_inputCurrent);
 		pOutputPort->SetPortCurrent(_outputCurrent);
-	}
-	else
-	{
+	} else {
 		double inputVoltage;
 		CPort * pInputPort;
 		CPort * pOutputPort;
-		if(_isPortAOutput)
-		{
+		if (_isPortAOutput) {
 			inputVoltage = _pPortB->PortVoltage(time, _inputCurrent);
 			pOutputPort = _pPortA;
 			pInputPort = _pPortB;
-		}
-		else
-		{
+		} else {
 			inputVoltage = _pPortA->PortVoltage(time, _inputCurrent);
 			pOutputPort = _pPortB;
 			pInputPort = _pPortA;
@@ -161,14 +129,12 @@ void CConverterBase::Solve(double time)
 		// Solve by iteration
 		int count = 0;
         double outputCurrentPre = _outputCurrent + 100;
-		while( count < _maxIter && abs(_outputCurrent - outputCurrentPre) > EPS )
-		{
+		while (count < _maxIter && abs(_outputCurrent - outputCurrentPre) > EPS) {
 			outputCurrentPre = _outputCurrent;
 			_outputCurrent = FindOutputCurrent(time, _isPortAOutput, inputVoltage, pOutputPort->PortVoltage(time, _outputCurrent), _inputCurrent);
 			count ++;
 		}
-		if( count == _maxIter)
-		{
+		if (count == _maxIter) {
             throw CSimException(GetName().c_str(),"Max number of iterations exceeded!");
 		}
 		pInputPort->SetPortCurrent(-_inputCurrent);
@@ -176,22 +142,17 @@ void CConverterBase::Solve(double time)
 	}
 }
 
-double CConverterBase::GetMaxInputPowerCurrent(double time, bool isPortA) const
-{
+double CConverterBase::GetMaxInputPowerCurrent(double time, bool isPortA) const {
 	CPort * pOutPort;
 	CPort * pInPort;
-	if( isPortA )
-	{
+	if (isPortA) {
 		pInPort = _pPortA;
 		pOutPort = _pPortB;
-	}
-	else
-	{
+	} else {
 		pInPort = _pPortB;
 		pOutPort = _pPortA;
 	}
-	if( !pOutPort->IsOutPort() )
-	{
+	if (!pOutPort->IsOutPort()) {
 		return 0;
 	}
 	// Assume the output power of the port is unimodal, use tenary search to find the maximum
@@ -201,19 +162,15 @@ double CConverterBase::GetMaxInputPowerCurrent(double time, bool isPortA) const
 	double fl = 0;
 	double fr = xr * pOutPort->PortVoltage(time, -xr);
 	double fm1, fm2;
-	while( xr - xl > EPS )
-	{
+	while (xr - xl > EPS) {
 		xm1 = (2*xl + xr ) / 3.;
 		xm2 = (xl + 2*xr ) / 3.;
 		fm1 = xm1 * pOutPort->PortVoltage(time, -xm1);
 		fm2 = xm2 * pOutPort->PortVoltage(time, -xm2);
-		if( fm1 > fm2 )
-		{
+		if (fm1 > fm2) {
 			xr = xm2;
 			fr = fm2;
-		}
-		else
-		{
+		} else {
 			xl = xm1;
 			fl = fm1;
 		}
@@ -221,8 +178,7 @@ double CConverterBase::GetMaxInputPowerCurrent(double time, bool isPortA) const
 	return xl;
 }
 
-CConverterBase* CConverterBase::Create(const string &derivedType)
-{
+CConverterBase* CConverterBase::Create(const string &derivedType) {
 	if (factories.find(derivedType) == factories.end()) {
         return NULL;
     }

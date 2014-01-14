@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Converter.h"
+#include "converters/Converter.h"
+#include "core/config.h"
 
-class CSimpleConverter : public CConverterBase
-{
+class CSimpleConverter : public CConverterBase {
 private:
 	double _efficiency;
 public:

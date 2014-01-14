@@ -14,12 +14,12 @@
 #include <string>
 #include <map>
 
-#include "config.h"
-#include "Bank.h"
-#include "Load.h"
-#include "Source.h"
-#include "CTI.h"
-#include "Component.h"
+#include "banks/Bank.h"
+#include "core/config.h"
+#include "core/Component.h"
+#include "cti/CTI.h"
+#include "loads/Load.h"
+#include "sources/Source.h"
 
 using namespace std;
 

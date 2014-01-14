@@ -7,15 +7,14 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
 #include <fstream>
 #include <string>
 #include <vector>
+#include "core/config.h"
 
 using namespace std;
 
-class CLookUpTable
-{
+class CLookUpTable {
 private:
 	int _dimension;
 	vector<int> _indexCount;

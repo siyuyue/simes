@@ -5,7 +5,7 @@
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/ref.hpp>
-#include "SimpleManager.h"
+#include "managers/SimpleManager.h"
 
 CSimpleManager::CSimpleManager(void) {
 	_period = INF;
@@ -20,7 +20,7 @@ CSimpleManager::~CSimpleManager(void) {
 }
 
 bool CSimpleManager::IsDecisionEpoch(double time) const {
-	if(time >= _nextDecisionTime) {
+	if (time >= _nextDecisionTime) {
 		return true;
 	}
 	return false;

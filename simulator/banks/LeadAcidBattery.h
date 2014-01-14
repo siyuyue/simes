@@ -8,8 +8,8 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Bank.h"
+#include "core/config.h"
+#include "banks/Bank.h"
 
 class CLeadAcidBattery:public CBankBase {
 private:

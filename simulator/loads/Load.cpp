@@ -4,9 +4,9 @@
 // **********************************************
 #include <string>
 
-#include "Load.h"
-#include "ConstantLoad.h"
-#include "ProfileLoad.h"
+#include "loads/Load.h"
+#include "loads/ConstantLoad.h"
+#include "loads/ProfileLoad.h"
 
 using namespace std;
 

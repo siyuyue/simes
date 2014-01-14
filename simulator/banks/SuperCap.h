@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Bank.h"
+#include "core/config.h"
+#include "banks/Bank.h"
 
-class CSuperCap:public CBankBase
-{
+class CSuperCap:public CBankBase {
 private:
 	double _capacitance;
 	double _openCircuitVoltage;

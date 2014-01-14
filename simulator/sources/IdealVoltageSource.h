@@ -6,7 +6,7 @@
 // - Inherits from CSourceBase
 // - Ideal source with constant terminal voltage
 // **********************************************
-#include "Source.h"
+#include "sources/Source.h"
 
 class CIdealVoltageSource:public CSourceBase {
 private:

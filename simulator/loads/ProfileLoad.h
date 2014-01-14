@@ -9,10 +9,9 @@
 #pragma once
 
 #include <vector>
-#include "Load.h"
+#include "loads/Load.h"
 
-class CProfileLoad:public CLoadBase
-{
+class CProfileLoad:public CLoadBase {
 private:
 	double _voltage;												// Load voltage
 	vector<double> _time;											// Time

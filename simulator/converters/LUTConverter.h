@@ -9,12 +9,11 @@
 #pragma once
 
 #include <string>
-#include "config.h"
-#include "Converter.h"
-#include "LookUpTable.h"
+#include "core/config.h"
+#include "core/LookUpTable.h"
+#include "converters/Converter.h"
 
-class CLUTConverter : public CConverterBase
-{
+class CLUTConverter : public CConverterBase {
 private:
     CLookUpTable *_pLUT;
 	bool _isInputCurrent;

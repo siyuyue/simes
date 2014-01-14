@@ -4,8 +4,8 @@
 // **********************************************
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "PulseManager.h"
-#include "SuperCap.h"
+#include "banks/SuperCap.h"
+#include "managers/PulseManager.h"
 
 CPulseManager::CPulseManager(void) : _superCapBankName("SC") {
     _period = INF;
@@ -41,7 +41,7 @@ CPulseManager::~CPulseManager(void) {
 }
 
 bool CPulseManager::IsDecisionEpoch(double time) const {
-    if(time >= _nextDecisionTime) {
+    if (time >= _nextDecisionTime) {
         return true;
     }
     return false;
@@ -58,7 +58,7 @@ void CPulseManager::Decision(double time, vector<CLoadBase*> pLoads, vector<CBan
         _mode = !_mode;
     }
     if (_mode) {
-        for (vector<CBankBase*>::iterator it = pBanks.begin(); it != pBanks.end(); it++ ) {
+        for (vector<CBankBase*>::iterator it = pBanks.begin(); it != pBanks.end(); it++) {
             if ((*it)->GetName() == _superCapBankName) {
                 CSuperCap *pSuperCap = dynamic_cast<CSuperCap *>(*it);
                 if (pSuperCap == NULL) {
@@ -71,7 +71,7 @@ void CPulseManager::Decision(double time, vector<CLoadBase*> pLoads, vector<CBan
             }
         }
     } else {
-        for (vector<CBankBase*>::iterator it = pBanks.begin(); it != pBanks.end(); it++ ) {
+        for (vector<CBankBase*>::iterator it = pBanks.begin(); it != pBanks.end(); it++) {
             if ((*it)->GetName() == _superCapBankName) {
                 CSuperCap *pSuperCap = dynamic_cast<CSuperCap *>(*it);
                 if (pSuperCap == NULL) {
@@ -91,7 +91,7 @@ void CPulseManager::Reset() {
 }
 
 double CPulseManager::NextTimeStep(double time, int precision) const {
-    if(_nextDecisionTime - time > 0) {
+    if (_nextDecisionTime - time > 0) {
         return _nextDecisionTime - time;
     } else {
         return 0;

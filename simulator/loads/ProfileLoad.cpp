@@ -4,9 +4,9 @@
 // **********************************************
 #include <boost/bind.hpp>
 #include <boost/lambda/lambda.hpp>
-#include "ProfileLoad.h"
-#include "Simulator.h"
-#include "SimException.h"
+#include "core/Simulator.h"
+#include "core/SimException.h"
+#include "loads/ProfileLoad.h"
 
 CProfileLoad::CProfileLoad() {
 	_voltage = 1.;
@@ -29,8 +29,7 @@ CProfileLoad::CProfileLoad() {
 CProfileLoad::~CProfileLoad() {
 }
 
-double CProfileLoad::GetConsumption() const
-{
+double CProfileLoad::GetConsumption() const {
 	return _consumption;
 }
 
@@ -53,7 +52,7 @@ void CProfileLoad::Reset() {
 }
 
 double CProfileLoad::NextTimeStep(double time, int precision) const {
-	if( _idx+1 != _time.size() ) {
+	if (_idx+1 != _time.size()) {
 		return _time[_idx + 1] - time;
 	}
 	return INF;
@@ -61,14 +60,14 @@ double CProfileLoad::NextTimeStep(double time, int precision) const {
 
 void CProfileLoad::TimeElapse(double time, double timeElapsed) {
 	_consumption += _powerNow * timeElapsed;
-	while( _idx+1 != _time.size() && time + timeElapsed >= _time[_idx + 1] ) {
+	while (_idx+1 != _time.size() && time + timeElapsed >= _time[_idx + 1]) {
 		_idx ++;
 	}
 	_powerNow = _voltage * _current[_idx];
 }
 
 bool CProfileLoad::CheckIntegrity() const {
-    if(_time.empty()) {
+    if (_time.empty()) {
         throw CSimException(GetName().c_str(), "Load profile is not set.");
     }
     return true;
@@ -76,12 +75,12 @@ bool CProfileLoad::CheckIntegrity() const {
 
 bool CProfileLoad::SetCurrentProfile(const string &s) {
 	ifstream inputProfile(string(GetSimulator()->GetPathPrefix() + s).c_str());
-	if(!inputProfile) {
+	if (!inputProfile) {
 		return false;
 	}
 	_time.clear();
 	_current.clear();
-	while(inputProfile) {
+	while (inputProfile) {
 		double time, current;
 		inputProfile >> time >> current;
 		_time.push_back(time);

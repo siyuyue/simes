@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Converter.h"
+#include "core/config.h"
+#include "converters/Converter.h"
 
-class CDCDCConverter : public CConverterBase
-{
+class CDCDCConverter : public CConverterBase {
 private:
 	// -------- parameter sets ------------
 	double _scale;

@@ -8,10 +8,9 @@
 // **********************************************
 #pragma once
 
-#include "Load.h"
+#include "loads/Load.h"
 
-class CConstantLoad:public CLoadBase
-{
+class CConstantLoad:public CLoadBase {
 private:
 	double _voltage;												// Load voltage
 	double _current;												// Load Current
