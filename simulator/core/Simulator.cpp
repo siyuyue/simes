@@ -324,8 +324,7 @@ bool CSimulator::IssueCommand(CCommand &command) {
 	case CCommand::SET:
 		return SetComponentProperty(command.targetName, command.propertyName, command.propertyValue);
 	case CCommand::GET:
-		command.propertyValue = GetComponentProperty(command.targetName, command.propertyName);
-		return true;
+		return GetComponentProperty(command.targetName, command.propertyName, command.propertyValue);
 	}
 	return false;
 }
@@ -350,14 +349,12 @@ double CSimulator::GetTime(void) {
     return _time;
 }
 
-string CSimulator::GetComponentProperty(const string &compName, const string &propertyName) const {
-    string value;
+bool CSimulator::GetComponentProperty(const string &compName, const string &propertyName, string &propertyValue) const {
 	CComponent * pComponent = GetComponent(compName);
 	if (pComponent == NULL) {
-		return string();
+		return false;
 	}
-	pComponent->GetProperty(propertyName, value);
-    return value;
+	return pComponent->GetProperty(propertyName, propertyValue);
 }
 
 CLoadBase* CSimulator::GetLoad(const string &name) const {

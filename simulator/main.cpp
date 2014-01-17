@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     }
     bool interactiveMode = false;
     // Parse options
-    for (int i=1; i<argc; i++) {
+    for (int i = 1; i < argc; i ++) {
         if (argv[i][0] == '-') {
             if (argv[i][1] == 'i') {
                 interactiveMode = true;
@@ -37,6 +37,7 @@ int main(int argc, char* argv[]) {
         }
     }
     // Main body
+    // Make sure CSimulator is initialized first.
     CSimulator::Initialize();
     CParser parser;
     CSimulator *pSimulator = NULL;
@@ -63,8 +64,7 @@ int main(int argc, char* argv[]) {
                 } else {
                     if (!pSimulator->IssueCommand(command)) {
                         cout << "Command failed to issue." << endl;
-                    }
-                    if (command.type == CCommand::GET) {
+                    } else if (command.type == CCommand::GET) {
                         cout << command.targetName << "." << command.propertyName << ":" << command.propertyValue << endl;
                     }
                 }

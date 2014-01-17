@@ -98,11 +98,11 @@ public:
     bool SetConverterPorts(const string &converterName, const string &portAName, const string &portBName);
     bool SetComponentProperty(const string &compName, const string &propertyName, const string &propertyValue);
     bool SetComponentPropertyInitial(const string &compName, const string &propertyName, const string &propertyValue);
+    bool GetComponentProperty(const string &compName, const string &propertyName, string &propertyValue) const;
     bool IssueCommand(CCommand &command);
     bool SetSensorInterval(double interval);
     bool SetPrecisionLevel(int level);
     double GetTime(void);
-    string GetComponentProperty(const string &compName, const string &propertyName) const;
     CLoadBase*			GetLoad(const string &name) const;
     CSourceBase*		GetSource(const string &name) const;
     CBankBase*			GetBank(const string &name) const;
