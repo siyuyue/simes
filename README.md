@@ -6,6 +6,14 @@ SIMES
 
 A simulator for hybrid electrical energy storage systems.
 
+Requirement:
+
+1. GCC compiler or equivalent.
+
+2. Boost library. Make sure to set enviroment variable "BOOST_ROOT" to the root directory of the boost library.
+
+3. QT for Visualizer.
+
 SIMES includes:
 
 1. Simulator:

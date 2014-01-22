@@ -8,5 +8,8 @@ All use of this work that leads to an academic publication should cite this:
 "SIMES: A Simulator for Hybrid Electrical Energy Storage Systems",
 Proc. of the Int'l Symposium on Low Power Electronics and Design, Sep. 2013.
 
-This work uses TinyXML(http://www.grinninglizard.com/tinyxml/),
+This work uses TinyXML (http://www.grinninglizard.com/tinyxml/),
 TinyXML is released under the ZLib license.
+
+This work uses boost library (http://www.boost.org/), boost library is released
+under the Boost Software License.
