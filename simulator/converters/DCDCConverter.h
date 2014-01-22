@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Converter.h"
+#include "core/config.h"
+#include "converters/Converter.h"
 
-class CDCDCConverter : public CConverterBase
-{
+class CDCDCConverter : public CConverterBase {
 private:
 	// -------- parameter sets ------------
 	double _scale;
@@ -42,5 +41,5 @@ public:
     virtual void Reset();
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
+    bool SetScaleParameter(const string& s);
 };

@@ -9,12 +9,11 @@
 #pragma once
 
 #include <string>
-#include "config.h"
-#include "Converter.h"
-#include "LookUpTable.h"
+#include "core/config.h"
+#include "core/LookUpTable.h"
+#include "converters/Converter.h"
 
-class CLUTConverter : public CConverterBase
-{
+class CLUTConverter : public CConverterBase {
 private:
     CLookUpTable *_pLUT;
 	bool _isInputCurrent;
@@ -27,6 +26,6 @@ public:
     virtual void Reset();
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual void CheckIntegrity() const;
+    virtual bool CheckIntegrity() const;
+    bool SetLUT(const string &s, bool isInputCurrent);
 };

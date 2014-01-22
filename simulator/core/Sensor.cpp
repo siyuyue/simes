@@ -2,37 +2,21 @@
 // Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 // University of Southern California
 // **********************************************
-#include "Sensor.h"
+#include "core/Sensor.h"
 
-CSensor::CSensor(const string &target, const string &prop) : _target(target), _property(prop)
-{
-	_pValue = NULL;
+CSensor::CSensor(const string &target, const string &propertyName, CProperty *property) : _target(target), _propertyName(propertyName) {
+	_property = property;
 }
 
-CSensor::~CSensor(void)
-{
+CSensor::~CSensor(void) {
 }
 
-double CSensor::Value()
-{
-	return *_pValue;
+string CSensor::GetPropertyValue() const {
+    string s;
+    _property->Get(s);
+    return s;
 }
 
-void CSensor::SetPointer(double *pValue)
-{
-	_pValue = pValue;
-}
-
-bool CSensor::IsPointerSet()
-{
-	if( _pValue == NULL)
-	{
-		return false;
-	}
-	return true;
-}
-
-string CSensor::GetTargetPropertyString()
-{
-	return _target + string(".") + _property;
+string CSensor::GetTargetPropertyString() const {
+	return _target + string(".") + _propertyName;
 }

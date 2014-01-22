@@ -8,20 +8,23 @@
 // **********************************************
 #pragma once
 
+#include <map>
 #include <string>
 #include <sstream>
-#include "config.h"
-#include "Sensor.h"
+#include "core/config.h"
+#include "core/Property.h"
 
 using namespace std;
 
 class CSimulator;
 
-class CComponent
-{
+class CComponent {
 private:
     string _name;                                                       // Unique identifier
     CSimulator *_pSimulator;                                            // Reference to the parent Simulator class
+    map<string, CProperty*> _properties;                                // Store all properties
+protected:
+    void _AddProperty(CProperty *property);
 public:
     CComponent(void);
 	virtual ~CComponent(void);
@@ -34,28 +37,9 @@ public:
     virtual double NextTimeStep(double time, int precision) const = 0 ;	// Return the next time step for simulation
 	virtual void TimeElapse(double time, double timeElapsed) = 0;		// Simulate for elapsed time, start from "time"
 	// Property interface
-    virtual void CheckIntegrity() const;                                // Check whether the properties are properly set. Throw an exception when not.
-    virtual bool SetProperty(const string &name, const string &value);	// Set the property identified by name
-    virtual string GetProperty(const string &name) const;				// Get the property identified by name
-	// Output interface
-    virtual bool SetSensor(const string &name, CSensor &sensor);		// Set up sensor to monitor values
+    virtual bool CheckIntegrity() const;                                // Check whether the properties are properly set
+    bool SetProperty(const string &propertyName, const string &value);  // Set the property identified by name
+    bool SetPropertyInitial(const string &propertyName, const string &value);  // Set the initial property identified by name
+    bool GetProperty(const string &propertyName, string &value);        // Get the property identified by name
+    CProperty* SetSensor(const string &propertyName);                   // Set up sensor to monitor values
 };
-
-// Conversion from string to int/float/double
-template <typename T>
-T FromString(const string& str)
-{
-	T t;
-	istringstream ss(str);
-	ss >> t;
-	return t;
-}
-
-// Conversion from int/float/double to string
-template <typename T>
-string ToString(const T t)
-{
-	ostringstream ss;
-	ss << t;
-	return ss.str();
-}

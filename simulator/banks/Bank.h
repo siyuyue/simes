@@ -9,17 +9,23 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Component.h"
-#include "Port.h"
-#include "Component.h"
+#include <boost/function.hpp>
+#include <boost/functional/factory.hpp>
+#include <string>
+#include <map>
+#include "core/config.h"
+#include "core/Component.h"
+#include "core/Port.h"
 
-class CBankBase : public CPort, public CComponent
-{
+using namespace std;
+
+class CBankBase : public CPort, public CComponent {
 private:
+    static map<string, boost::function<CBankBase*()> > factories;
 public:
 	CBankBase(void);
 	virtual ~CBankBase(void);
     virtual double GetStateofCharge() const = 0;					// Get state of charge
+    static void Initialize();
     static CBankBase* Create(const string &derivedType);			// Called by the parser to create a new bank
 };

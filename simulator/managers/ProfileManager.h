@@ -8,10 +8,9 @@
 // **********************************************
 #include <vector>
 #include <map>
-#include "ChargeManager.h"
+#include "managers/ChargeManager.h"
 
-class CProfileManager : public CChargeManagerBase
-{
+class CProfileManager : public CChargeManagerBase {
 private:
 	int _bankNumber;
 	int _ctiNumber;
@@ -27,7 +26,6 @@ public:
 	virtual void Reset();
     virtual double NextTimeStep(double time, int precision) const;
 	virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string& value);
-    virtual string GetProperty(const string &name) const;
-    virtual void CheckIntegrity() const;
+    virtual bool CheckIntegrity() const;
+    bool SetProfile(const string& s);
 };

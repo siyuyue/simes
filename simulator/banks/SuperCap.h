@@ -8,16 +8,15 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Bank.h"
+#include "core/config.h"
+#include "banks/Bank.h"
 
-class CSuperCap:public CBankBase
-{
+class CSuperCap:public CBankBase {
 private:
 	double _capacitance;
 	double _openCircuitVoltage;
 	double _selfDischargeRate;
-	double _seriesResistace;
+	double _serialResistance;
 	double _minVoltage;
 	double _maxVoltage;
 	double _maxPower;
@@ -33,7 +32,4 @@ public:
     virtual void Reset();											// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
 };

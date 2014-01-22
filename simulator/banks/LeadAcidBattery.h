@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Bank.h"
+#include "core/config.h"
+#include "banks/Bank.h"
 
-class CLeadAcidBattery:public CBankBase
-{
+class CLeadAcidBattery:public CBankBase {
 private:
 	double _capacity;												// The nominal energy capacity of the battery in Ah
 	double _stateOfCharge;
@@ -26,6 +25,7 @@ private:
 	double _ageFactor;
 
 	double _ccv;
+    double _consumption;
 public:
 	CLeadAcidBattery(void);
 	~CLeadAcidBattery(void);
@@ -36,7 +36,4 @@ public:
     virtual void Reset();											// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string& value);
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
 };

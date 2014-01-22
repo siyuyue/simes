@@ -8,10 +8,9 @@
 // **********************************************
 #pragma once
 
-#include "Load.h"
+#include "loads/Load.h"
 
-class CConstantLoad:public CLoadBase
-{
+class CConstantLoad:public CLoadBase {
 private:
 	double _voltage;												// Load voltage
 	double _current;												// Load Current
@@ -27,7 +26,4 @@ public:
 	virtual void Reset();											// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
 	virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
 };

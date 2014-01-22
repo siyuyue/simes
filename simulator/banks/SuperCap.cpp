@@ -3,157 +3,105 @@
 // University of Southern California
 // **********************************************
 #include <cmath>
-#include "SuperCap.h"
-#include "SimException.h"
+#include <boost/bind.hpp>
+#include <boost/lambda/lambda.hpp>
+#include "banks/SuperCap.h"
+#include "core/SimException.h"
 
-CSuperCap::CSuperCap(void)
-{
+CSuperCap::CSuperCap(void) {
 	_capacitance = 1.;
 	_openCircuitVoltage = 1.;
 	_selfDischargeRate = 0;
-	_seriesResistace = 0;
+	_serialResistance = 0;
 	_minVoltage = 0.;
     _maxVoltage = INF;
 	_maxPower = 100;
+
+	// Add properties.
+	_AddProperty(new CProperty("capacitance", "Capacitance.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_capacitance)),
+		boost::bind(CheckSetter<double>, _1, boost::ref(_capacitance), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("serial_resistance", "Serial resistance.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_serialResistance)),
+		boost::bind(CheckSetter<double>, _1, boost::ref(_serialResistance), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("min_voltage", "Minimum open circuit voltage.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_minVoltage)),
+		boost::bind(CheckSetter<double>, _1, boost::ref(_minVoltage), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("max_voltage", "Maximum open circuit voltage.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_maxVoltage)),
+		boost::bind(CheckSetter<double>, _1, boost::ref(_maxVoltage), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("max_power", "Maximum output power.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_maxPower)),
+		boost::bind(CheckSetter<double>, _1, boost::ref(_maxPower), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("serial_resistance", "Serial resistance.",
+		InvalidSetter,
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_serialResistance)),
+		boost::bind(CheckSetter<double>, _1, boost::ref(_serialResistance), (boost::lambda::_1 > 0))));
+	_AddProperty(new CProperty("voltage", "Open circuit voltage.",
+		boost::bind(CheckSetter<double>, _1, boost::ref(_openCircuitVoltage), (boost::lambda::_1 > 0)),
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_openCircuitVoltage))));
+	_AddProperty(new CProperty("consumption", "Total energy drawn from the storage bank.",
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_consumption))));
+	_AddProperty(new CProperty("current", "Port Current.",
+		boost::bind(SimpleGetter<double>, _1, boost::ref(_portCurrent))));
 }
 
-CSuperCap::~CSuperCap(void)
-{
-
+CSuperCap::~CSuperCap(void) {
 }
 
-double CSuperCap::GetCapacitance()
-{
+double CSuperCap::GetCapacitance() {
 	return _capacitance;
 }
 
-double CSuperCap::GetStateofCharge() const
-{
+double CSuperCap::GetStateofCharge() const {
 	return _openCircuitVoltage / _maxVoltage;
 }
 
-double CSuperCap::PortVoltage(double time, double current) const
-{
-	return _openCircuitVoltage + current * _seriesResistace;
+double CSuperCap::PortVoltage(double time, double current) const {
+	return _openCircuitVoltage + current * _serialResistance;
 }
 
-double CSuperCap::MaxOutPortCurrent(double time) const
-{
-	if( _openCircuitVoltage < _minVoltage )
-	{
+double CSuperCap::MaxOutPortCurrent(double time) const {
+	if( _openCircuitVoltage < _minVoltage ) {
 		return 0;
 	}
-	if( _seriesResistace == 0 )
-	{
+	if( _serialResistance == 0 ) {
 		return _maxPower / _openCircuitVoltage;
 	}
-	return _openCircuitVoltage / _seriesResistace;
+	return _openCircuitVoltage / _serialResistance;
 }
 
-void CSuperCap::Reset()
-{
+void CSuperCap::Reset() {
 	_consumption = 0;
 }
 
-double CSuperCap::NextTimeStep(double time, int precision) const
-{
-	if( _portCurrent == 0 )
-	{
-
-		if( _selfDischargeRate == 0 )
-		{
+double CSuperCap::NextTimeStep(double time, int precision) const {
+	if( _portCurrent == 0 ) {
+		if( _selfDischargeRate == 0 ) {
 			return INF;
-		}
-		else
-		{
+		} else {
 			return 1 / _selfDischargeRate;
 		}
 	}
-	double difference = 0.1/(1+precision);
+	double difference = 0.1 / (1 + precision);
     return difference * _capacitance / abs(_portCurrent);
 }
 
-void CSuperCap::TimeElapse(double time, double timeElapsed)
-{
+void CSuperCap::TimeElapse(double time, double timeElapsed) {
 	double energyNow = _capacitance * _openCircuitVoltage * _openCircuitVoltage / 2;
 	double energyChanged = _portCurrent * _openCircuitVoltage * timeElapsed;
 	double selfDischargeRatio = _openCircuitVoltage < _minVoltage ? 1 : exp(- timeElapsed*_selfDischargeRate);
 	double energyNew = energyNow*selfDischargeRatio + energyChanged;
 	_openCircuitVoltage = sqrt( energyNew * 2 / _capacitance );
-	if( _openCircuitVoltage < _minVoltage )
-	{
+	if( _openCircuitVoltage < _minVoltage ) {
 		throw CSimException(GetName().c_str(), "Super capacitor voltage goes below minimum.");
-	}
-	else if( _openCircuitVoltage > _maxVoltage)
-	{
+	} else if( _openCircuitVoltage > _maxVoltage) {
 		throw CSimException(GetName().c_str(), "Super capacitor voltage goes above maximum.");
 	}
 	_consumption -= energyChanged;
-}
-
-bool CSuperCap::SetProperty(const string &name, const string& value)
-{
-	if( name == string("voltage") )
-	{
-		_openCircuitVoltage = FromString<double>(value);
-		return true;
-	}
-	if( name == string("capacitance") )
-	{
-		_capacitance = FromString<double>(value);
-		return true;
-	}
-	if( name == string("series_resistance") )
-	{
-		_seriesResistace = FromString<double>(value);
-		return true;
-	}
-	if( name == string("min_voltage") )
-	{
-		_minVoltage = FromString<double>(value);
-		return true;
-	}
-	if( name == string("max_voltage") )
-	{
-		_maxVoltage = FromString<double>(value);
-		return true;
-	}
-	return false;
-}
-
-string CSuperCap::GetProperty(const string &name) const
-{
-	if( name == string("voltage") )
-	{
-		return ToString<double>(_openCircuitVoltage);
-	}
-	if( name == string("capacitance") )
-	{
-		return ToString<double>(_capacitance);
-	}
-	if( name == string("consumption") )
-	{
-		return ToString<double>(_consumption);
-	}
-	return string();
-}
-
-bool CSuperCap::SetSensor(const string &name, CSensor &sensor)
-{
-	if( name == string("voltage") )
-	{
-		sensor.SetPointer(&_openCircuitVoltage);
-		return true;
-	}
-	if( name == string("current") )
-	{
-		sensor.SetPointer(&_portCurrent);
-		return true;
-	}
-	if( name == string("consumption") )
-	{
-		sensor.SetPointer(&_consumption);
-		return true;
-	}
-	return false;
 }

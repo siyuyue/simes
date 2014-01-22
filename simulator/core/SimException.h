@@ -10,8 +10,7 @@
 
 using namespace std;
 
-class CSimException : public exception
-{
+class CSimException : public exception {
 public:
     CSimException(const char *name, const char *message);
     ~CSimException() throw();

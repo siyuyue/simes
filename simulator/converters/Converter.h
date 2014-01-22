@@ -9,12 +9,19 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Component.h"
-#include "Port.h"
+#include <boost/function.hpp>
+#include <boost/functional/factory.hpp>
+#include <string>
+#include <map>
+#include "core/config.h"
+#include "core/Component.h"
+#include "core/Port.h"
 
-class CConverterBase : public CComponent
-{
+using namespace std;
+
+class CConverterBase : public CComponent {
+private:
+    static map<string, boost::function<CConverterBase*()> > factories;
 protected:
 	CPort *_pPortA;
 	CPort *_pPortB;
@@ -35,7 +42,6 @@ public:
     virtual double GetMaxInputPowerCurrent(double time, bool isPortA) const;
     virtual double FindOutputCurrent(double time, bool isOutputPortA, double inputVoltage, double outputVoltage, double inputCurrent) const = 0;
     virtual double FindInputCurrent(double time, bool isInputPortA, double inputVoltage, double outputVoltage, double outputCurrent) const = 0;
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
     static CConverterBase* Create(const string &derivedType);
+    static void Initialize();
 };

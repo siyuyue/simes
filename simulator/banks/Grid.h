@@ -7,13 +7,14 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Bank.h"
+#include "core/config.h"
+#include "banks/Bank.h"
 
-class CGrid:public CBankBase
-{
+class CGrid:public CBankBase {
 private:
 	double _voltage;
+    double _maxPortCurrent;
+    double _consumption;
 public:
 	CGrid(void);
 	~CGrid(void);

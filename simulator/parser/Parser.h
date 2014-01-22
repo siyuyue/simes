@@ -9,15 +9,14 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "tinyxml.h"
-#include "Simulator.h"
 #include <queue>
+#include "tinyxml.h"
+#include "core/config.h"
+#include "core/Simulator.h"
 
 using namespace std;
 
-class CParser
-{
+class CParser {
 private:
 	TiXmlDocument _doc;						// TinyXML Parser
 	CSimulator *_pSimulator;				// Allocated in Parse() but will not be deallocated in ~CParser()

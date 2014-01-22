@@ -6,12 +6,12 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Port.h"
-#include "Component.h"
-#include "Converter.h"
 #include <vector>
 #include <cmath>
+#include "core/config.h"
+#include "core/Component.h"
+#include "core/Port.h"
+#include "converters/Converter.h"
 
 using namespace std;
 
@@ -20,8 +20,7 @@ using namespace std;
 // - Inherited from CPort
 // - One CTI can have multiple ports
 // ********************************************** 
-class CCTIPort : public CPort
-{
+class CCTIPort : public CPort {
 private:
 	double *_pCTIVoltage;
 	int _CTIID;
@@ -38,8 +37,7 @@ public:
 // - Inherited from CTiming
 // - Modeled as an ideal capacitor
 // ********************************************** 
-class CCTI : public CComponent
-{
+class CCTI : public CComponent {
 private:
 	double _voltage;											// Current voltage
 	double _targetVoltage;										// Target voltage
@@ -61,13 +59,13 @@ public:
 	CPort * NewPort();											// Create a new CTI port
     CPort * GetPort(int id) const;								// Get id-th CTI port
 	static CCTI* Create();										// Called by the parser to create a new CTI
+    static void Initialize();
 	
     virtual void Reset();										// Inherited from CComponent
     virtual double NextTimeStep(double time, int precision) const;
 	virtual void TimeElapse(double time, double timeElapsed);
-    virtual void CheckIntegrity() const;
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual string GetProperty(const string &name) const;
-    virtual bool SetSensor(const string &name, CSensor &sensor);
+    virtual bool CheckIntegrity() const;
+    bool SetVoltageRegulatorByName(const string&s);
+    bool GetVoltageRegulatorName(string&s);
 };
 

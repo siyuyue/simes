@@ -4,15 +4,15 @@
 // **********************************************
 #pragma once
 
-#include "Bank.h"
-#include "ChargeManager.h"
-#include "Converter.h"
-#include "CTI.h"
-#include "Load.h"
-#include "Port.h"
-#include "Source.h"
-#include "config.h"
-#include "Sensor.h"
+#include "banks/Bank.h"
+#include "converters/Converter.h"
+#include "core/Port.h"
+#include "core/config.h"
+#include "core/Sensor.h"
+#include "cti/CTI.h"
+#include "loads/Load.h"
+#include "managers/ChargeManager.h"
+#include "sources/Source.h"
 #include <map>
 #include <set>
 #include <string>
@@ -27,10 +27,9 @@ using namespace std;
 // CCommand
 // - Command to CSimulator
 // **********************************************
-class CCommand
-{
+class CCommand {
 public:
-    enum {SET, GET, SIMULATE, FINISH, INVALID}type;
+    enum {SET, GET, SIMULATE, FINISH, INVALID} type;
 	double time;
 	string targetName;
 	string propertyName;
@@ -47,9 +46,9 @@ bool operator < (const CCommand &c1, const CCommand &c2);
 // CSimulator class:
 // - Main class for simulation
 // **********************************************
-class CSimulator
-{
+class CSimulator {
 private:
+    static bool _initialized;
 	string _projectName;
     string _pathPrefix;
 	set<string> _usedNames;
@@ -98,15 +97,17 @@ public:
     bool SetCTIVoltageRegulator(const string &ctiName, const string &converterName);
     bool SetConverterPorts(const string &converterName, const string &portAName, const string &portBName);
     bool SetComponentProperty(const string &compName, const string &propertyName, const string &propertyValue);
+    bool SetComponentPropertyInitial(const string &compName, const string &propertyName, const string &propertyValue);
+    bool GetComponentProperty(const string &compName, const string &propertyName, string &propertyValue) const;
     bool IssueCommand(CCommand &command);
     bool SetSensorInterval(double interval);
     bool SetPrecisionLevel(int level);
     double GetTime(void);
-    string GetComponentProperty(const string &compName, const string &propertyName) const;
     CLoadBase*			GetLoad(const string &name) const;
     CSourceBase*		GetSource(const string &name) const;
     CBankBase*			GetBank(const string &name) const;
     CCTI*				GetCTI(const string &name) const;
     CConverterBase*     GetConverter(const string &name) const;
     CComponent*     	GetComponent(const string &name) const;
+    static void Initialize();
 };

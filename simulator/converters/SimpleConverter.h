@@ -8,11 +8,10 @@
 // **********************************************
 #pragma once
 
-#include "config.h"
-#include "Converter.h"
+#include "converters/Converter.h"
+#include "core/config.h"
 
-class CSimpleConverter : public CConverterBase
-{
+class CSimpleConverter : public CConverterBase {
 private:
 	double _efficiency;
 public:
@@ -23,6 +22,4 @@ public:
 	virtual void Reset();
     virtual double NextTimeStep(double time, int precision) const;
 	virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
-    virtual string GetProperty(const string &name) const;
 };

@@ -6,16 +6,15 @@
 // - Inherited from ChargeManagerBase
 // - Does nothing
 // **********************************************
-#include "ChargeManager.h"
+#include "managers/ChargeManager.h"
 
-class CPulseManager : public CChargeManagerBase
-{
+class CPulseManager : public CChargeManagerBase {
 private:
     double _nextDecisionTime;
     double _period;
     double _superCapEnergyTargetHigh;
     double _superCapEnergyTargetLow;
-    double _periodHi;
+    double _periodHigh;
     double _periodLow;
     double _nextPeriodTime;
     bool _mode;      // Low = 0, High = 1
@@ -28,5 +27,4 @@ public:
     virtual void Reset();
     virtual double NextTimeStep(double time, int precision) const;
     virtual void TimeElapse(double time, double timeElapsed);
-    virtual bool SetProperty(const string &name, const string &value);
 };

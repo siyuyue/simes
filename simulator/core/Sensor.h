@@ -9,21 +9,19 @@
 
 #include <string>
 #include <iostream>
+#include "core/Property.h"
 
 using namespace std;
 
-class CSensor
-{
+class CSensor {
 private:
 	string _target;
-	string _property;
-	double *_pValue;
+	string _propertyName;
+	CProperty *_property;
 public:
-    CSensor(const string &target, const string &prop);
+    CSensor(const string &target, const string &propertyName, CProperty *property);
 	~CSensor(void);
-	double Value();
-	void SetPointer(double *pValue);
-	bool IsPointerSet();
-	string GetTargetPropertyString();
+	string GetPropertyValue() const;
+	string GetTargetPropertyString() const;
 };
 

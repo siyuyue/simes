@@ -2,54 +2,45 @@
 // Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
 // University of Southern California
 // **********************************************
-#include "Simulator.h"
-#include "SimException.h"
+#include "core/Simulator.h"
+#include "core/SimException.h"
 #include <iostream>
 #include <sstream>
 
 using namespace std;
 
-CCommand::CCommand()
-{
+bool CSimulator::_initialized = false;
+
+CCommand::CCommand() {
 	time = 0;
     type = INVALID;
 }
 
-CCommand::~CCommand()
-{
+CCommand::~CCommand() {
 }
 
-bool operator < (const CCommand &c1, const CCommand &c2)
-{
+bool operator < (const CCommand &c1, const CCommand &c2) {
 	return c1.time < c2.time;
 }
 
-CCommand CCommand::FromString(const string &commandString)
-{
+CCommand CCommand::FromString(const string &commandString) {
     istringstream ss(commandString);
     string type;
     CCommand command;
     ss >> type;
-    if( type == string("get") )
-    {
+    if (type == string("get")) {
         command.type = CCommand::GET;
         ss >> command.targetName;
         ss >> command.propertyName;
-    }
-    else if( type == string("set") )
-    {
+    } else if (type == string("set")) {
         command.type = CCommand::SET;
         ss >> command.targetName;
         ss >> command.propertyName;
         ss >> command.propertyValue;
-    }
-    else if( type == string("sim") )
-    {
+    } else if( type == string("sim")) {
         command.type = CCommand::SIMULATE;
         ss >> command.time;
-    }
-    else if( type == string("finish") )
-    {
+    } else if( type == string("finish")) {
         command.type = CCommand::FINISH;
     }
     return command;
@@ -58,154 +49,123 @@ CCommand CCommand::FromString(const string &commandString)
 // **********************************************
 // CSimulator
 // **********************************************
-CSimulator::CSimulator(void)
-{
+CSimulator::CSimulator(void) {
 	_pManager = NULL;
 	_time = 0;
     _sensorInterval = 0;
 	_precisionLevel = 0;
 }
 
-CSimulator::~CSimulator(void)
-{
-	for( vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it++ )
-	{
+CSimulator::~CSimulator(void) {
+	for (vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it ++) {
 		delete *it;
 	}
 	_sensorOutput.close();
 }
 
-CPort * CSimulator::_GetPort(const string &name)
-{
-	if( _usedNames.find(name) == _usedNames.end() )
-	{
+CPort * CSimulator::_GetPort(const string &name) {
+	if (_usedNames.find(name) == _usedNames.end()) {
 		// Invalid port name
 		return NULL;
 	}
-	if( _CTIMapping.find(name) != _CTIMapping.end() )
-	{
+	if (_CTIMapping.find(name) != _CTIMapping.end()) {
 		return _pCTIs[_CTIMapping[name]]->NewPort();
-	}
-	else if( _loadMapping.find(name) != _loadMapping.end() )
-	{
+	} else if( _loadMapping.find(name) != _loadMapping.end()) {
 		return _pLoads[_loadMapping[name]];
-	}
-	else if( _bankMapping.find(name) != _bankMapping.end() )
-	{
+	} else if( _bankMapping.find(name) != _bankMapping.end()) {
 		return _pBanks[_bankMapping[name]];
-	}
-	else if( _sourceMapping.find(name) != _sourceMapping.end() )
-	{
+	} else if( _sourceMapping.find(name) != _sourceMapping.end()) {
 		return _pSources[_sourceMapping[name]];
 	}
 	// Port not found
 	return NULL;
 }
 
-void CSimulator::Reset()
-{
+void CSimulator::Reset() {
 	_time = 0;
-	for( vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it++ )
-	{
+	for (vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it++) {
 		(*it)->Reset();
 	}
 	_sensorOutput.close();
 	_sensorOutput.clear();
 	_sensorOutput.open(string(_projectName+string(".out")).c_str());
 	_sensorOutput << "Time";
-	for( vector<CSensor *>::iterator it = _pSensors.begin(); it != _pSensors.end(); it++ )
-	{
+	for (vector<CSensor *>::iterator it = _pSensors.begin(); it != _pSensors.end(); it++) {
 		_sensorOutput << " \t" << (*it)->GetTargetPropertyString();
 	}
 	_sensorOutput << endl;
     _lastSensorTime = -1e10;
 }
 
-void CSimulator::Run(double timeToRun)
-{
+void CSimulator::Run(double timeToRun) {
+    if (!_initialized) {
+        throw CSimException("Simulator", "CSimulator class is not initialized.");
+    }
     try
     {
-        while(_time < timeToRun)
-        {
+        while(_time < timeToRun) {
             // Satisfy all the load power by default
-            for( vector<CLoadBase*>::iterator it = _pLoads.begin(); it != _pLoads.end(); it++ )
-            {
+            for (vector<CLoadBase*>::iterator it = _pLoads.begin(); it != _pLoads.end(); it++) {
                 (*it)->GetConverter()->SetPortOutputCurrent(_time, (*it)->IsPortA(), (*it)->PortDefaultCurrent(_time));
             }
-            if( _pManager->IsDecisionEpoch(_time) )
-            {
+            if (_pManager->IsDecisionEpoch(_time)) {
                 _pManager->Decision(_time,_pLoads,_pBanks,_pSources,_pConverters,_pCTIs);
             }
-            for( vector<CConverterBase*>::iterator it = _pConverters.begin(); it != _pConverters.end(); it++ )
-            {
+            for (vector<CConverterBase*>::iterator it = _pConverters.begin(); it != _pConverters.end(); it++) {
                 (*it)->Solve(_time);
             }
-            for( vector<CCTI*>::iterator it = _pCTIs.begin(); it != _pCTIs.end(); it++ )
-            {
+            for (vector<CCTI*>::iterator it = _pCTIs.begin(); it != _pCTIs.end(); it++) {
                 (*it)->FindRegulatorCurrent(_time);
             }
             double timeMin = INF;
-            for( vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it++ )
-            {
+            for (vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it++) {
                 timeMin = min(timeMin, (*it)->NextTimeStep(_time, _precisionLevel));
             }
-            if( _time + timeMin > timeToRun )
-            {
+            if (_time + timeMin > timeToRun) {
                 timeMin = timeToRun - _time;
             }
-            for( vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it++ )
-            {
+            for (vector<CComponent*>::iterator it = _pComponents.begin(); it != _pComponents.end(); it++) {
                 (*it)->TimeElapse(_time,timeMin);
             }
             _time += timeMin;
 
-            if( _time - _lastSensorTime >= _sensorInterval )
-            {
+            if (_time - _lastSensorTime >= _sensorInterval) {
                 _sensorOutput << _time;
-                for( vector<CSensor *>::iterator it = _pSensors.begin(); it != _pSensors.end(); it++ )
-                {
-                    _sensorOutput << " \t" << (*it)->Value();
+                for (vector<CSensor *>::iterator it = _pSensors.begin(); it != _pSensors.end(); it++) {
+                    _sensorOutput << " \t" << (*it)->GetPropertyValue();
                 }
                 _sensorOutput << endl;
                 _lastSensorTime = _time;
             }
         }
     }
-    catch(CSimException &e)
-    {
+    catch (CSimException &e) {
         cout << "[Error at time " << _time << "!]" << e.componentName << ": " << e.exceptionMessage << endl;
         throw CSimException("Simulator","Error during simulation.");
     }
 }
 
-void CSimulator::SetProjectName(const string &name)
-{
+void CSimulator::SetProjectName(const string &name) {
 	_projectName = name;
 }
 
-void CSimulator::SetPathPrefix(string prefix)
-{
+void CSimulator::SetPathPrefix(string prefix) {
     _pathPrefix = prefix;
 }
 
-string CSimulator::GetPathPrefix() const
-{
+string CSimulator::GetPathPrefix() const {
     return _pathPrefix;
 }
 
-void CSimulator::CheckIntegrity() const
-{
+void CSimulator::CheckIntegrity() const {
     // Check whether the HEES system is properly set
-    for( vector<CComponent*>::const_iterator it = _pComponents.begin(); it != _pComponents.end(); it++ )
-    {
+    for (vector<CComponent*>::const_iterator it = _pComponents.begin(); it != _pComponents.end(); it++) {
         (*it)->CheckIntegrity();
     }
 }
 
-bool CSimulator::SetManager(const string &name, CChargeManagerBase *pManager)
-{
-	if( _usedNames.find(name) != _usedNames.end() || pManager == NULL )
-	{
+bool CSimulator::SetManager(const string &name, CChargeManagerBase *pManager) {
+	if (_usedNames.find(name) != _usedNames.end() || pManager == NULL) {
 		return false;
 	}
     pManager->SetSimulator(this);
@@ -217,10 +177,8 @@ bool CSimulator::SetManager(const string &name, CChargeManagerBase *pManager)
 	return true;
 }
 
-bool CSimulator::AddLoad(const string &name, CLoadBase * pLoad)
-{
-	if( _usedNames.find(name) != _usedNames.end() || pLoad == NULL )
-	{
+bool CSimulator::AddLoad(const string &name, CLoadBase * pLoad) {
+	if (_usedNames.find(name) != _usedNames.end() || pLoad == NULL)	{
 		// Name already used
 		return false;
 	}
@@ -233,10 +191,8 @@ bool CSimulator::AddLoad(const string &name, CLoadBase * pLoad)
 	return true;
 }
 
-bool CSimulator::AddSource(const string &name, CSourceBase * pSource)
-{
-	if( _usedNames.find(name) != _usedNames.end() || pSource == NULL )
-	{
+bool CSimulator::AddSource(const string &name, CSourceBase * pSource) {
+	if (_usedNames.find(name) != _usedNames.end() || pSource == NULL) {
 		// Name already used
 		return false;
 	}
@@ -249,10 +205,8 @@ bool CSimulator::AddSource(const string &name, CSourceBase * pSource)
 	return true;
 }
 
-bool CSimulator::AddBank(const string &name, CBankBase * pBank)
-{
-	if( _usedNames.find(name) != _usedNames.end() || pBank == NULL )
-	{
+bool CSimulator::AddBank(const string &name, CBankBase * pBank) {
+	if (_usedNames.find(name) != _usedNames.end() || pBank == NULL) {
 		// Name already used
 		return false;
 	}
@@ -265,10 +219,8 @@ bool CSimulator::AddBank(const string &name, CBankBase * pBank)
 	return true;
 }
 
-bool CSimulator::AddCTI(const string &name, CCTI * pCTI)
-{
-	if( _usedNames.find(name) != _usedNames.end() || pCTI == NULL )
-	{
+bool CSimulator::AddCTI(const string &name, CCTI * pCTI) {
+	if (_usedNames.find(name) != _usedNames.end() || pCTI == NULL) {
 		// Name already used
 		return false;
 	}
@@ -282,10 +234,8 @@ bool CSimulator::AddCTI(const string &name, CCTI * pCTI)
 	return true;
 }
 
-bool CSimulator::AddConverter(const string &name, CConverterBase * pConverter)
-{
-	if( _usedNames.find(name) != _usedNames.end() || pConverter == NULL )
-	{
+bool CSimulator::AddConverter(const string &name, CConverterBase * pConverter) {
+	if (_usedNames.find(name) != _usedNames.end() || pConverter == NULL) {
 		// Name already used
 		return false;
 	}
@@ -298,56 +248,48 @@ bool CSimulator::AddConverter(const string &name, CConverterBase * pConverter)
 	return true;
 }
 
-bool CSimulator::AddSensor(const string &target, const string &prop)
-{
+bool CSimulator::AddSensor(const string &target, const string &prop) {
     CComponent *pComponent;
     CSensor *pSensor;
-	if( (pComponent = GetComponent(target)) != NULL )
-	{
-		pSensor = new CSensor(target, prop);
-		if( pComponent->SetSensor(prop, *pSensor) )
-		{
-			_pSensors.push_back(pSensor);
-			return true;
-		}
+    CProperty *pProperty;
+	if ((pComponent = GetComponent(target)) != NULL) {
+        pProperty = pComponent->SetSensor(prop);
+        if (pProperty != NULL) {
+            pSensor = new CSensor(target, prop, pProperty);
+            _pSensors.push_back(pSensor);
+            return true;  
+        }
 	}
 	return false;
 }
 
-bool CSimulator::SetCTIVoltageRegulator(const string &ctiName, const string &converterName)
-{
+bool CSimulator::SetCTIVoltageRegulator(const string &ctiName, const string &converterName) {
 	CCTI * pCTI = GetCTI(ctiName);
-	if( pCTI == NULL )
-	{
+	if (pCTI == NULL) {
 		return false;
 	}
 	CConverterBase * pConverter = GetConverter(converterName);
-	if( pConverter == NULL )
-	{
+	if (pConverter == NULL) {
 		return false;
 	}
 	pCTI->SetVoltageRegulator(pConverter);
 	return true;
 }
 
-bool CSimulator::SetConverterPorts(const string &converterName, const string &portAName, const string &portBName)
-{
+bool CSimulator::SetConverterPorts(const string &converterName, const string &portAName, const string &portBName) {
     CConverterBase *pConverter = GetConverter(converterName);
-	if(pConverter == NULL)
-	{
+	if(pConverter == NULL) {
 		return false;
 	}
 
 	CPort *pPortA = _GetPort(portAName);
 
-	if(pPortA == NULL || !pPortA->IsFloating())
-	{
+	if (pPortA == NULL || !pPortA->IsFloating()) {
 		return false;
 	}
 	CPort *pPortB = _GetPort(portBName);
 
-	if(pPortB == NULL || !pPortB->IsFloating())
-	{
+	if(pPortB == NULL || !pPortB->IsFloating()) {
 		return false;
 	}
 
@@ -356,21 +298,25 @@ bool CSimulator::SetConverterPorts(const string &converterName, const string &po
 	return true;
 }
 
-bool CSimulator::SetComponentProperty(const string &compName, const string &propertyName, const string &propertyValue)
-{
+bool CSimulator::SetComponentProperty(const string &compName, const string &propertyName, const string &propertyValue) {
     CComponent *pComponent = GetComponent(compName);
-	if( pComponent == NULL )
-	{
+	if (pComponent == NULL)	{
 		return false;
 	}
 	return pComponent->SetProperty(propertyName, propertyValue);
 }
 
-bool CSimulator::IssueCommand(CCommand &command)
-{
+bool CSimulator::SetComponentPropertyInitial(const string &compName, const string &propertyName, const string &propertyValue) {
+    CComponent *pComponent = GetComponent(compName);
+    if (pComponent == NULL) {
+        return false;
+    }
+    return pComponent->SetPropertyInitial(propertyName, propertyValue);
+}
+
+bool CSimulator::IssueCommand(CCommand &command) {
 	Run(command.time);
-	switch(command.type)
-	{
+	switch (command.type) {
 	case CCommand::FINISH:
 		return true;
 	case CCommand::SIMULATE:
@@ -378,123 +324,104 @@ bool CSimulator::IssueCommand(CCommand &command)
 	case CCommand::SET:
 		return SetComponentProperty(command.targetName, command.propertyName, command.propertyValue);
 	case CCommand::GET:
-		command.propertyValue = GetComponentProperty(command.targetName, command.propertyName);
-		return true;
+		return GetComponentProperty(command.targetName, command.propertyName, command.propertyValue);
 	}
 	return false;
 }
 
-bool CSimulator::SetSensorInterval(double interval)
-{
-    if( interval >= _sensorInterval )
-    {
+bool CSimulator::SetSensorInterval(double interval) {
+    if (interval >= _sensorInterval) {
         _sensorInterval = interval;
         return true;
     }
     return false;
 }
 
-bool CSimulator::SetPrecisionLevel(int level)
-{
-    if( level >= 0 && level <= 10 )
-    {
+bool CSimulator::SetPrecisionLevel(int level) {
+    if (level >= 0 && level <= 10) {
         _precisionLevel = level;
         return true;
     }
     return false;
 }
 
-double CSimulator::GetTime(void)
-{
+double CSimulator::GetTime(void) {
     return _time;
 }
 
-string CSimulator::GetComponentProperty(const string &compName, const string &propertyName) const
-{
+bool CSimulator::GetComponentProperty(const string &compName, const string &propertyName, string &propertyValue) const {
 	CComponent * pComponent = GetComponent(compName);
-	if( pComponent == NULL )
-	{
-		return string();
+	if (pComponent == NULL) {
+		return false;
 	}
-	return pComponent->GetProperty(propertyName);
+	return pComponent->GetProperty(propertyName, propertyValue);
 }
 
-CLoadBase*	CSimulator::GetLoad(const string &name) const
-{
-	if( _loadMapping.find(name) == _loadMapping.end() )
-	{
+CLoadBase* CSimulator::GetLoad(const string &name) const {
+	if (_loadMapping.find(name) == _loadMapping.end()) {
 		return NULL;
 	}
     return _pLoads[_loadMapping.at(name)];
 }
 
-CSourceBase* CSimulator::GetSource(const string &name) const
-{
-	if( _sourceMapping.find(name) == _sourceMapping.end() )
-	{
+CSourceBase* CSimulator::GetSource(const string &name) const {
+	if (_sourceMapping.find(name) == _sourceMapping.end()) {
 		return NULL;
 	}
     return _pSources[_sourceMapping.at(name)];
 }
 
-CBankBase*	CSimulator::GetBank(const string &name) const
-{
-	if( _bankMapping.find(name) == _bankMapping.end() )
-	{
+CBankBase* CSimulator::GetBank(const string &name) const {
+	if (_bankMapping.find(name) == _bankMapping.end()) {
 		return NULL;
 	}
     return _pBanks[_bankMapping.at(name)];
 }
 
-CCTI* CSimulator::GetCTI(const string &name) const
-{
-	if( _CTIMapping.find(name) == _CTIMapping.end() )
-	{
+CCTI* CSimulator::GetCTI(const string &name) const {
+	if (_CTIMapping.find(name) == _CTIMapping.end()) {
 		return NULL;
 	}
     return _pCTIs[_CTIMapping.at(name)];
 }
 
-CConverterBase* CSimulator::GetConverter(const string &name) const
-{
-	if( _converterMapping.find(name) == _converterMapping.end() )
-	{
+CConverterBase* CSimulator::GetConverter(const string &name) const {
+	if (_converterMapping.find(name) == _converterMapping.end()) {
 		return NULL;
 	}
     return _pConverters[_converterMapping.at(name)];
 }
 
-CComponent* CSimulator::GetComponent(const string &name) const
-{
-	if( _usedNames.find(name) == _usedNames.end() )
-	{
+CComponent* CSimulator::GetComponent(const string &name) const {
+	if (_usedNames.find(name) == _usedNames.end()) {
 		// Invalid Component name
 		return NULL;
 	}
-	if( _CTIMapping.find(name) != _CTIMapping.end() )
-	{
+	if (_CTIMapping.find(name) != _CTIMapping.end()) {
         return _pCTIs[_CTIMapping.at(name)];
-	}
-	else if( _loadMapping.find(name) != _loadMapping.end() )
-	{
+	} else if (_loadMapping.find(name) != _loadMapping.end()) {
         return _pLoads[_loadMapping.at(name)];
-	}
-	else if( _bankMapping.find(name) != _bankMapping.end() )
-	{
+	} else if (_bankMapping.find(name) != _bankMapping.end()) {
         return _pBanks[_bankMapping.at(name)];
-	}
-	else if( _sourceMapping.find(name) != _sourceMapping.end() )
-	{
+	} else if (_sourceMapping.find(name) != _sourceMapping.end()) {
         return _pSources[_sourceMapping.at(name)];
-	}
-	else if( _converterMapping.find(name) != _converterMapping.end() )
-	{
+	} else if (_converterMapping.find(name) != _converterMapping.end()) {
         return _pConverters[_converterMapping.at(name)];
-	}
-	else if( _managerName == name )
-	{
+	} else if (_managerName == name) {
 		return _pManager;
 	}
 	// Component not found
 	return NULL;
+}
+
+void CSimulator::Initialize() {
+    if (!_initialized) {
+        CConverterBase::Initialize();
+        CBankBase::Initialize();
+        CLoadBase::Initialize();
+        CSourceBase::Initialize();
+        CChargeManagerBase::Initialize();
+        CCTI::Initialize();
+        _initialized = true;
+    }
 }
