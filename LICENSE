@@ -4,9 +4,10 @@ University of Southern California
 This work is licensed under Creative Commons Attribution 3.0 Unported License:
 http://creativecommons.org/licenses/by/3.0/
 
-All use of this work that leads to an academic publication should cite this:
-"SIMES: A Simulator for Hybrid Electrical Energy Storage Systems",
-Proc. of the Int'l Symposium on Low Power Electronics and Design, Sep. 2013.
+All use of this work that leads to an academic publication should cite:
+S. Yue, D. Zhu, Y. Wang, Y. Kim, N. Chang, and M. Pedram, "SIMES: A Simulator
+for Hybrid Electrical Energy Storage Systems," Proc. of the Int'l Symposium on
+Low Power Electronics and Design, Sep. 2013.
 
 This work uses TinyXML (http://www.grinninglizard.com/tinyxml/),
 TinyXML is released under the ZLib license.
