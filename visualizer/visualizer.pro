@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Copyright (c) 2013 SPORTS Lab(http://atrak.usc.edu/~sport/),
+# Copyright (c) 2013 SPORT Lab(http://atrak.usc.edu/~sport/),
 # University of Southern California
 #
 # Project created by QtCreator 2013-02-01T15:07:11
